@@ -244,13 +244,76 @@ ul.alert-dropdown {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-@media screen {
-    
-}
-.saving-title p {
-    font-size: 40px;
+@media {
+    .saving-title p {
+        font-size: 8px;
+    }
+
+    .saving-body b {
+        font-size: 12px;
+    }
+    spen.fa {
+        font-size: 1em;
+    }
 }
 
-.saving-body b {
-    font-size: 60px;
+@media (min-width: 480px) {
+    .saving-title p {
+        font-size: 10px;
+    }
+
+    .saving-body b {
+        font-size: 1em;
+    }
+    spen.fa {
+        font-size: 1em;
+    }
 }
+
+@media (min-width: 768px) {
+    .saving-title p {
+        font-size: 20px;
+    }
+
+    .saving-body b {
+        font-size: 2em;
+    }
+    spen.fa {
+        font-size: 2em;
+    }
+}
+
+@media (min-width: 992px) {
+    .saving-title p {
+        font-size: 30px;
+    }
+
+    .saving-body b {
+        font-size: 3em;
+    }
+
+    spen.fa {
+        font-size: 3em;
+    }
+}
+
+@media (min-width: 1200px) {
+    .saving-title p {
+        font-size: 40px;
+    }
+
+    .saving-body b {
+        font-size: 4em;
+    }
+
+    spen.fa {
+        font-size: 4em;
+    }
+}
+/*.saving-title p {*/
+    /*font-size: 40px;*/
+/*}*/
+
+/*.saving-body b {*/
+    /*font-size: 60px;*/
+/*}*/
