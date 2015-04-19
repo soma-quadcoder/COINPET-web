@@ -44,16 +44,6 @@
     <script src="./js/jquery-2.1.3.js"></script>
 
     <script src="./js/spaScript.js"></script>
-    <script>
-        function action_signin() {
-            alert("로그인 됬다고 가정");
-            $(".logout").removeClass("logout");
-            $(".side-nav").animate({width:'toggle'},350);
-            $("#page-wrapper").children(".container-fluid").load("./spa/dashboard.html");
-
-            return false;
-        }
-    </script>
 
 </head>
 
@@ -73,82 +63,62 @@
             <a class="navbar-brand" href="index.html">COINPET</a>
         </div>
         <!-- Top Menu Items -->
-        <ul class="nav navbar-right top-nav">
+        <ul class="nav navbar-right top-nav" style="display:none">
             <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-child"></i> 자녀 선택 <b class="caret"></b></a>
+                <a href="#;" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-child"></i> 자녀 선택 <b class="caret"></b></a>
                 <ul class="dropdown-menu message-dropdown">
-                    <li class="message-preview">
-                        <a href="#">
-                            <div class="media">
-                                <b><img class="image-kids" src="./image/kids1.png" alt="" style="vertical-align: middle">
-                                    전창우 25</b>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="message-preview">
-                        <a href="#">
-                            <div class="media">
-                                <b><img class="image-kids" src="./image/kids1.png" alt="" style="vertical-align: middle">
-                                    전창우 25</b>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="message-preview">
-                        <a href="#">
-                            <div class="media">
-                                <b><img class="image-kids" src="./image/kids1.png" alt="" style="vertical-align: middle">
-                                    전창우 25</b>
-                            </div>
-                        </a>
-                    </li>
+                    <!-- kids_selector가 들어가야 할 -->
+
+                    <!-- kids_selector가 들어가는 곳 끝 -->
                     <li class="message-footer">
-                        <a href="#"><i class="fa fa-plus"></i><b> 자녀 등록하기</b></a>
+                        <div id="kids"></div>
+                        <a href="#;" id="addKids"><i class="fa fa-plus"></i><b> 자녀 등록하기</b></a>
                     </li>
                 </ul>
             </li>
 
             <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell"></i> 알림 <b class="caret"></b></a>
+                <a href="#;" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell"></i> 알림 <b class="caret"></b></a>
                 <ul class="dropdown-menu alert-dropdown">
                     <li>
-                        <a href="#">Alert Name <span class="label label-default">Alert Badge</span></a>
+                        <a href="#;">Alert Name <span class="label label-default">Alert Badge</span></a>
                     </li>
                     <li>
-                        <a href="#">Alert Name <span class="label label-primary">Alert Badge</span></a>
+                        <a href="#;">Alert Name <span class="label label-primary">Alert Badge</span></a>
                     </li>
                     <li>
-                        <a href="#">Alert Name <span class="label label-success">Alert Badge</span></a>
+                        <a href="#;">Alert Name <span class="label label-success">Alert Badge</span></a>
                     </li>
                     <li>
-                        <a href="#">Alert Name <span class="label label-info">Alert Badge</span></a>
+                        <a href="#;">Alert Name <span class="label label-info">Alert Badge</span></a>
                     </li>
                     <li>
-                        <a href="#">Alert Name <span class="label label-warning">Alert Badge</span></a>
+                        <a href="#;">Alert Name <span class="label label-warning">Alert Badge</span></a>
                     </li>
                     <li>
-                        <a href="#">Alert Name <span class="label label-danger">Alert Badge</span></a>
+                        <a href="#;">Alert Name <span class="label label-danger">Alert Badge</span></a>
                     </li>
                     <li class="divider"></li>
                     <li>
-                        <a href="#">View All</a>
+                        <a href="#;">View All</a>
                     </li>
                 </ul>
             </li>
             <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> 계정 <b class="caret"></b></a>
+                <a href="#;" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> 계정 <b class="caret"></b></a>
                 <ul class="dropdown-menu">
                     <li>
-                        <a href="#"><i class="fa fa-fw fa-user"></i> 계정 정보</a>
+                        <a href="#;"><i class="fa fa-fw fa-user"></i> 계정 정보</a>
                     </li>
                     <li>
-                        <a href="#"><i class="fa fa-fw fa-envelope"></i> 공지사항</a>
+                        <a href="#;"><i class="fa fa-fw fa-envelope"></i> 공지사항</a>
                     </li>
                     <li>
-                        <a href="#"><i class="fa fa-fw fa-gear"></i> 설정</a>
+                        <a href="#;"><i class="fa fa-fw fa-gear"></i> 설정</a>
                     </li>
                     <li class="divider"></li>
                     <li>
-                        <a href="#"><i class="fa fa-fw fa-power-off"></i> 로그 아웃</a>
+                        <a href="#;"><i class="fa fa-fw fa-power-off"></i> 로그 아웃</a>
                     </li>
                 </ul>
             </li>
@@ -159,28 +129,28 @@
         <div id = "sidebar" class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav side-nav" style="display: none">
                 <li class="active">
-                    <a href="#"><i class="fa fa-fw fa-dashboard"></i> 전체 요약</a>
+                    <a href="#;"><i class="fa fa-fw fa-dashboard"></i> 전체 요약</a>
                 </li>
                 <li>
-                    <a href="#"><i class="fa fa-fw fa-krw"></i> 저축 </a>
+                    <a href="#;"><i class="fa fa-fw fa-krw"></i> 저축 </a>
                 </li>
                 <li>
-                    <a href="#"><i class="fa fa-fw fa-table"></i> 용돈기입장 </a>
+                    <a href="#;"><i class="fa fa-fw fa-table"></i> 용돈기입장 </a>
                 </li>
                 <li>
-                    <a href="#"><i class="fa fa-fw fa-trophy"></i> 퀘스트 </a>
+                    <a href="#;"><i class="fa fa-fw fa-trophy"></i> 퀘스트 </a>
                 </li>
                 <li>
-                    <a href="#"><i class="fa fa-fw fa-github-alt"></i> 펫 </a>
+                    <a href="#;"><i class="fa fa-fw fa-github-alt"></i> 펫 </a>
                 </li>
                 <!--<li>-->
-                    <!--<a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-arrows-v"></i> Dropdown <i class="fa fa-fw fa-caret-down"></i></a>-->
+                    <!--<a href="javascript:;" data-toggle="collapse" data-target="#;demo"><i class="fa fa-fw fa-arrows-v"></i> Dropdown <i class="fa fa-fw fa-caret-down"></i></a>-->
                     <!--<ul id="demo" class="collapse">-->
                         <!--<li>-->
-                            <!--<a href="#">Dropdown Item</a>-->
+                            <!--<a href="#;">Dropdown Item</a>-->
                         <!--</li>-->
                         <!--<li>-->
-                            <!--<a href="#">Dropdown Item</a>-->
+                            <!--<a href="#;">Dropdown Item</a>-->
                         <!--</li>-->
                     <!--</ul>-->
                 <!--</li>-->
@@ -204,16 +174,16 @@
                 <div class="col-lg-4"></div>
 
                 <div class="col-lg-4">
-                    <form class="form-signin" name="f" onsubmit="return action_signin()" method="post" action = '#'>
+                    <form class="form-signin" onsubmit="return action_signin()" method="post" action = '#;'>
                         <h2 class="form-signin-heading">로그인 정보 입력</h2>
                         <label for="inputEmail" class="sr-only">이메일 주소</label>
                         <input type="email" id="inputEmail" class="form-control" placeholder="이메일 주소" required autofocus>
                         <label for="inputPassword" class="sr-only">비밀번호</label>
                         <input type="password" id="inputPassword" class="form-control" placeholder="비밀번호" required>
                         <div class="checkbox">
-                        <label>
-                        <input type="checkbox" value="remember-me"> Remember me
-                        </label>
+                            <label>
+                            <input type="checkbox" value="remember-me"> Remember me
+                            </label>
                         </div>
                         <button class="btn btn-lg btn-primary btn-block" type="submit">로그인</button>
                     </form>
@@ -226,10 +196,10 @@
         <!-- /.container-fluid -->
 
     </div>
-    <!-- /#page-wrapper -->
+    <!-- /#;page-wrapper -->
 
 </div>
-<!-- /#wrapper -->
+<!-- /#;wrapper -->
 
 <!-- jQuery -->
 <script src="js/jquery.js"></script>

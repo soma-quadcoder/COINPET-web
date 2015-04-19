@@ -310,10 +310,24 @@ ul.alert-dropdown {
         font-size: 4em;
     }
 }
-/*.saving-title p {*/
-    /*font-size: 40px;*/
-/*}*/
 
-/*.saving-body b {*/
-    /*font-size: 60px;*/
-/*}*/
+
+.text-block {
+    display: block;
+    margin :0 auto;
+    text-align: center;
+}
+
+.addKids {
+    width: 100%;
+    position: fixed;
+    top: 0px;
+    z-index: 10000;
+    background-color: rgba(0,0,0, 0.7);
+}
+
+.addKids_panel {
+    text-align: center;
+    margin: 0 auto;
+    width: 33%;
+}

@@ -39,10 +39,14 @@ body {
   border-top-right-radius: 0;
 }
 
-.side-nav.logout {
-  display: none;
-}
-
 #wrapper.logout {
   padding-left:0px;
 }
+
+/*#sidebarmenu.logout {*/
+  /*display: none;*/
+/*}*/
+
+/*.top-nav.logout {*/
+  /*display: none;*/
+/*}*/
