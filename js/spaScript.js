@@ -117,7 +117,7 @@ function getChild () {
 
 function repositionAddKids() {
     $('.addKids').css("height", $(window).height());
-    $('.addKids_panel').css("margin-top", $(window).height()/2 - $('.addKids_panel').height());
+    $('.addKids_panel').css("margin-top", ( $(window).height() - $('.addKids_panel').height() )/2 );
 }
 
 $(document).ready(function() {

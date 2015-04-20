@@ -1,35 +1,35 @@
 <script>
-//    new Morris.Donut({
-//        element: 'morris-donut-chart',
-//        data: [{
-//            label: "현재 저축량  ",
-//            value: 20000
-//        }, {
-//            label: "남은 저축량  ",
-//            value: 30000
-//        }],
-//        formatter: function(x) {
-//            return "￦" + x.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-//        },
-//        resize: true
-//    });
-
-    var decimal_data = [];
-    for (var x = 0; x <= 360; x += 10) {
-        decimal_data.push({
-            x: x,
-            y: 10
-        });
-    }
-    window.m = Morris.Line({
-        element: 'flot-line-chart',
-        data: decimal_data,
-        xkey: 'x',
-        ykeys: ['y'],
-        labels: ['sin(x)'],
-        parseTime: false,
-        goals: [-1, 0, 1]
+    new Morris.Donut({
+        element: 'morris-donut-chart',
+        data: [{
+            label: "현재 저축량  ",
+            value: 20000
+        }, {
+            label: "남은 저축량  ",
+            value: 30000
+        }],
+        formatter: function(x) {
+            return "￦" + x.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+        },
+        resize: true
     });
+
+//    var decimal_data = [];
+//    for (var x = 0; x <= 360; x += 10) {
+//        decimal_data.push({
+//            x: x,
+//            y: 10
+//        });
+//    }
+//    window.m = Morris.Line({
+//        element: 'flot-line-chart',
+//        data: decimal_data,
+//        xkey: 'x',
+//        ykeys: ['y'],
+//        labels: ['sin(x)'],
+//        parseTime: false,
+//        goals: [-1, 0, 1]
+//    });
 
 </script>
 
@@ -51,7 +51,7 @@
                 <div class="container-fluid">
                     <!--<div id="morris-donut-chart"></div>-->
 
-                    <div class="flot-chart-content" id="flot-line-chart" style="padding: 0px; position: relative;></div>
+                    <div class="flot-chart-content" id="morris-donut-chart" style="padding: 0px; position: relative;></div>
                 </div>
                 <div class="row">
                     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
