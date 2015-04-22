@@ -8,8 +8,9 @@ var child;
 var kids_selector;
 var selected_fk_kdis;
 var mainPage = $("#page-wrapper").children(".container-fluid");
-//var domain='http://172.16.101.197';
 var domain="";
+
+domain='http://172.16.101.197';
 
 function action_addKids() {
     var pn="";
@@ -32,7 +33,7 @@ function action_addKids() {
             child.push(addedChild);
             $('.inputPN').val('');
             $("#kids").append(kids_selector.replace("name", addedChild.name));
-            mainPage.load("./spa/dashboard.html");
+            $("#page-wrapper").children(".container-fluid").load("./spa/dashboard.html");
             $('.addKids').hide('slow');
         },
         error: function() {
@@ -69,7 +70,6 @@ function action_signin() {
             $(".top-nav").animate({height: 'toggle'}, 500);
 
             jwt = "Bearer "+result.Authorization;
-            alert("jwt "+jwt);
             getChild();
         }
     });
@@ -175,19 +175,19 @@ $(document).ready(function() {
 
         switch( $(this).index() ) {
             case 0: // 전체 요약 선택
-                mainPage.load("../spa/dashboard.html");
+                mainPage.load("./spa/dashboard.html");
                 break;
             case 1: // 저축 선택
-                mainPage.load("../spa/dashboard.html");
+                mainPage.load("./spa/dashboard.html");
                 break;
             case 2: // 용돈 기입장 선택
-                mainPage.load("../spa/dashboard.html");
+                mainPage.load("./spa/dashboard.html");
                 break;
             case 3: // 퀘스트 선택
-                mainPage.load("../spa/dashboard.html");
+                mainPage.load("./spa/dashboard.html");
                 break;
             case 4: // 펫 선택
-                mainPage.load("../spa/dashboard.html");
+                mainPage.load("./spa/dashboard.html");
                 break;
         }
     });

@@ -24,8 +24,8 @@
         type: 'GET',
         contentType : "application/x-www-form-urlencoded; charset=UTF-8",
         success: function(html) {
-            alert(child[i].fk_kids);
             for(var i=0 ; i<child.length ; i++){
+                alert(child[i].fk_kids);
                 $('#insertChart').append( html.replace('id="chart"', 'id="chart'+child[i].fk_kids+'"')
                         .replace('nameHead', child[i].name));
                 newChart(child[i].fk_kids);
