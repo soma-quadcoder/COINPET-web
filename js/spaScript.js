@@ -7,6 +7,9 @@ var params;
 var child;
 var kids_selector;
 var selected_fk_kdis;
+var mainPage = $("#page-wrapper").children(".container-fluid");
+//var domain='http://172.16.101.197';
+var domain="";
 
 function action_addKids() {
     var pn="";
@@ -17,7 +20,7 @@ function action_addKids() {
 
     $.ajax({       // Login
 
-        url: 'http://172.16.101.197/api/user/parents/child',
+        url: domain+'/api/user/parents/child',
         type: 'POST',
         beforeSend: function (xhr) {
             xhr.setRequestHeader ("Authorization", jwt);
@@ -29,7 +32,7 @@ function action_addKids() {
             child.push(addedChild);
             $('.inputPN').val('');
             $("#kids").append(kids_selector.replace("name", addedChild.name));
-            $("#page-wrapper").children(".container-fluid").load("./spa/dashboard.html");
+            mainPage.load("./spa/dashboard.html");
             $('.addKids').hide('slow');
         },
         error: function() {
@@ -56,7 +59,7 @@ function action_signin() {
     params = {'email':email, 'passwd':passwd };
 
     $.ajax({
-        url: 'http://172.16.101.197/api/user/parents/login',
+        url: domain+'/api/user/parents/login',
         data: params,
         type: 'POST',
         contentType : "application/x-www-form-urlencoded; charset=UTF-8",
@@ -66,6 +69,7 @@ function action_signin() {
             $(".top-nav").animate({height: 'toggle'}, 500);
 
             jwt = "Bearer "+result.Authorization;
+            alert("jwt "+jwt);
             getChild();
         }
     });
@@ -76,7 +80,7 @@ function action_signin() {
 
 function getChild () {
     $.ajax({       // Login
-        url: 'http://172.16.101.197/api/user/parents/child',
+        url: domain+'/api/user/parents/child',
         type: 'GET',
         beforeSend: function (xhr) {
             xhr.setRequestHeader ("Authorization", jwt);
@@ -119,6 +123,7 @@ function repositionAddKids() {
     $('.addKids').css("height", $(window).height());
     $('.addKids_panel').css("margin-top", ( $(window).height() - $('.addKids_panel').height() )/2 );
 }
+
 
 $(document).ready(function() {
 
@@ -168,22 +173,21 @@ $(document).ready(function() {
         $(this).addClass('active');
 
 
-        var pageContainer = $("#page-wrapper").children(".container-fluid");
         switch( $(this).index() ) {
             case 0: // 전체 요약 선택
-                pageContainer.load("../spa/dashboard.html");
+                mainPage.load("../spa/dashboard.html");
                 break;
             case 1: // 저축 선택
-                pageContainer.load("../spa/dashboard.html");
+                mainPage.load("../spa/dashboard.html");
                 break;
             case 2: // 용돈 기입장 선택
-                pageCntainer.load("../spa/dashboard.html");
+                mainPage.load("../spa/dashboard.html");
                 break;
             case 3: // 퀘스트 선택
-                pageContainer.load("../spa/dashboard.html");
+                mainPage.load("../spa/dashboard.html");
                 break;
             case 4: // 펫 선택
-                pageContainer.load("../spa/dashboard.html");
+                mainPage.load("../spa/dashboard.html");
                 break;
         }
     });
