@@ -1,22 +1,51 @@
 <script>
     var chart;
     var newChart;
-    newChart = function(fk_kids) {
-        chart = new Morris.Donut({
-            element: "chart" +fk_kids,
-            data: [{
-                label: "현재 저축량  ",
-                value: 20000
-            }, {
-                label: "남은 저축량  ",
-                value: 30000
-            }],
-            formatter: function (x) {
-                return "￦" + x.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+    var old_html;
+    var goal = {};
+    newChart = function(fk_kids, name) {
+        $.ajax({
+            url: domain+'/api/goal/'+fk_kids,
+            type: 'GET',
+            contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader ("Authorization", jwt);
             },
-            resize: true
+            success: function(result) {
+                goal.content = result[0].content;
+                goal.goal_cost = result[0].goal_cost;
+                goal.now_cost = result[0].now_cost;
+                goal.remain = (goal.goal_cost < goal.now_cost) ? 0 : goal.goal_cost - goal.now_cost;
+
+                $('#insertChart').append( old_html.replace('id="chart"', 'id="chart'+fk_kids+'"')
+                        .replace('nameHead', name)
+                        .replace('now_cost', goal.now_cost)
+                        .replace('goal_cost', goal.goal_cost)
+                        .replace('remain_cost', goal.remain ));
+
+                chart = new Morris.Donut({
+                    element: "chart" +fk_kids,
+                    data: [{
+                        label: "현재 저축량  ",
+                        value: goal.now_cost
+                    }, {
+                        label: "남은 저축량  ",
+                        value: goal.remain
+                    }],
+                    formatter: function (x) {
+                        return "￦" + x.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+                    },
+                    resize: true
+                });
+            },
+            error: function() {
+                alert("오류, 목표 정보를 받아오는데 실패하였습니다.");
+            }
+
         });
     };
+
+
 
     $.ajax({       // Login
 
@@ -24,11 +53,9 @@
         type: 'GET',
         contentType : "application/x-www-form-urlencoded; charset=UTF-8",
         success: function(html) {
+            old_html = html;
             for(var i=0 ; i<child.length ; i++){
-                alert(child[i].fk_kids);
-                $('#insertChart').append( html.replace('id="chart"', 'id="chart'+child[i].fk_kids+'"')
-                        .replace('nameHead', child[i].name));
-                newChart(child[i].fk_kids);
+                newChart(child[i].fk_kids, child[i].name);
             }
         },
         error: function() {
@@ -36,6 +63,7 @@
         }
 
     });
+
 
 
 //    var decimal_data = [];

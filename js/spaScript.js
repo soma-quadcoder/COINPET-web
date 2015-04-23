@@ -10,7 +10,7 @@ var selected_fk_kdis;
 var mainPage = $("#page-wrapper").children(".container-fluid");
 var domain="";
 
-//domain='http://172.16.101.197';
+domain='http://172.16.100.181';
 
 function action_addKids() {
     var pn="";
