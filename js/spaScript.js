@@ -7,10 +7,8 @@ var params;
 var child;
 var kids_selector;
 var selected_fk_kdis;
-var mainPage = $("#page-wrapper").children(".container-fluid");
+var mainPage = $("#page-wrapper");
 var domain="";
-
-domain='http://172.16.100.181';
 
 function action_addKids() {
     var pn="";
@@ -33,7 +31,7 @@ function action_addKids() {
             child.push(addedChild);
             $('.inputPN').val('');
             $("#kids").append(kids_selector.replace("name", addedChild.name));
-            $("#page-wrapper").children(".container-fluid").load("./spa/dashboard.html");
+            $("#page-wrapper").load("./spa/dashboard.html");
             $('.addKids').hide('slow');
         },
         error: function() {
@@ -64,19 +62,28 @@ function action_signin() {
         data: params,
         type: 'POST',
         contentType : "application/x-www-form-urlencoded; charset=UTF-8",
-        success: function(result) {
-            $(".logout").removeClass("logout");
-            $(".side-nav").animate({width: 'toggle'}, 500);
-            $(".top-nav").animate({height: 'toggle'}, 500);
-
-            jwt = "Bearer "+result.Authorization;
-            getChild();
-        }
+        success: success_signin
     });
 
     return false;
 }
 
+function success_signin(result) {
+    $(".logout").removeClass("logout");
+    $(".side-nav").animate({width: 'toggle'}, 500);
+    $(".top-nav").animate({height: 'toggle'}, 500);
+
+    if(result) {
+        jwt = "Bearer " + result.Authorization;
+
+        if ($("#inputRemember")[0].checked)
+            $.cookie('jwt', jwt, {'expires': 15});
+        else
+            $.cookie('jwt', jwt);
+    }
+
+    getChild();
+}
 
 function getChild () {
     $.ajax({       // Login
@@ -97,19 +104,26 @@ function getChild () {
                     kids_selector = html;
                     if(child.length)
                     {
-                        $("#page-wrapper").children(".container-fluid").load("./spa/dashboard.html");
+                        //$.ajax({
+                        //    url: './spa/dashboard.html',
+                        //    dataType: 'html',
+                        //    success: function(html) {
+                        //        //dashboard html
+                        //        $("#page-wrapper").html(html);
+                        //    }
+                        //});
+                        $("#page-wrapper").load('./spa/dashboard.html');
 
                         selected_fk_kdis = child[0].fk_kids;
                         for(var i=0 ; i<child.length ; i++)
                         {
                             $('#kids').append(kids_selector.replace("name", child[i].name));
-                            //$(".message-footer").prepend(kids_selector.replace("name", child[i].name));
                         }
 
                     }
                     else {
                         $(".side-bar li").hide();
-                        $("#page-wrapper").children(".container-fluid").load("./spa/no_child.html");
+                        $("#page-wrapper").load("./spa/no_child.html");
                     }
 
                 }
@@ -126,6 +140,14 @@ function repositionAddKids() {
 
 
 $(document).ready(function() {
+    jwt = $.cookie('jwt');
+
+    if(jwt == null) {
+        $("#page-wrapper").load("./spa/signin.html");
+    }
+    else {
+        success_signin(null);
+    }
 
     $.ajax({        // addKids 불러오기
         type: 'GET',
@@ -150,6 +172,11 @@ $(document).ready(function() {
     $("body").click(function () {
         $('.dropdown').children('ul').hide('down slow');
         $('.addKids').hide('slow');
+    });
+
+    $("#logout").click(function () {
+        $.removeCookie('jwt');
+        location.reload();
     });
 
     $(".dropdown").click(function (e) {
