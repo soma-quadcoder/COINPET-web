@@ -20,7 +20,12 @@ define(function () {
             require.undef(pageScript);
             require(['dashboard']);
             pageScript = 'dashboard';
-
+        },
+        datatable: function() {
+            $('#page-warrper').load('./spa/datatable.html');
+            require.undef(pageScript);
+            require(['datatable']);
+            pageScript = 'datatable';
         }
     };
 });
