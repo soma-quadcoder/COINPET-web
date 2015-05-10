@@ -8,7 +8,8 @@
 (function (factory) {
 	if (typeof define === 'function' && define.amd) {
 		// AMD (Register as an anonymous module)
-		define(['jquery'], factory);
+		//define(['../jquery'], factory);
+		define(['jquery-2.1.3.js'], factory);
 	} else if (typeof exports === 'object') {
 		// Node/CommonJS
 		module.exports = factory(require('jquery'));

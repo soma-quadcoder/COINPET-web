@@ -1,31 +1,32 @@
 /**
- * Created by jeon on 2015. 4. 18..
- */
+* Created by jeon on 2015. 4. 18..
+*/
 
 var jwt;
 var params;
 var child;
 var kids_selector;
 var mainPage = $("#page-wrapper");
-var domain="";
+var domain = "";
+var pageLoader;
 
 function action_addKids() {
-    var pn="";
+    var pn = "";
     var inputPN = $('.inputPN');
-    for(var i=0 ; i<4 ; i++) {
+    for (var i = 0; i < 4; i++) {
         pn += inputPN[i].value;
     }
 
     $.ajax({       // Login
 
-        url: domain+'/api/user/parents/child',
+        url: domain + '/api/user/parents/child',
         type: 'POST',
         beforeSend: function (xhr) {
-            xhr.setRequestHeader ("Authorization", jwt);
+            xhr.setRequestHeader("Authorization", jwt);
         },
-        data: {'pn' : pn },
-        contentType : "application/x-www-form-urlencoded; charset=UTF-8",
-        success: function(addedChild) {
+        data: {'pn': pn},
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        success: function (addedChild) {
             alert('등록되었습니다.');
             child.push(addedChild);
             $('.inputPN').val('');
@@ -33,7 +34,7 @@ function action_addKids() {
             $("#page-wrapper").load("./spa/dashboard.html");
             $('.addKids').hide('slow');
         },
-        error: function() {
+        error: function () {
             alert('pn이 올바르지 않습니다.');
         }
 
@@ -45,13 +46,13 @@ function action_signin() {
     var email = $("#inputEmail").val();
     var passwd = $("#inputPassword").val();
 
-    params = {'email':email, 'passwd':passwd };
+    params = {'email': email, 'passwd': passwd};
 
     $.ajax({
-        url: domain+'/api/user/parents/login',
+        url: domain + '/api/user/parents/login',
         data: params,
         type: 'POST',
-        contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
         success: success_signin
     });
 
@@ -63,7 +64,7 @@ function success_signin(result) {
     $(".side-nav").animate({width: 'toggle'}, 500);
     $(".top-nav").animate({height: 'toggle'}, 500);
 
-    if(result) {
+    if (result) {
         jwt = "Bearer " + result.Authorization;
 
         if ($("#inputRemember")[0].checked)
@@ -75,20 +76,19 @@ function success_signin(result) {
     getChild();
 }
 
-function getChild () {
+function getChild() {
     $.ajax({       // Login
-        url: domain+'/api/user/parents/child',
+        url: domain + '/api/user/parents/child',
         type: 'GET',
         beforeSend: function (xhr) {
-            xhr.setRequestHeader ("Authorization", jwt);
+            xhr.setRequestHeader("Authorization", jwt);
         },
-        contentType : "application/x-www-form-urlencoded; charset=UTF-8",
-        success: function(result) {
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        success: function (result) {
             child = result;
 
-            if(child.length)
-            {
-                loadPage('dashboard');
+            if (child.length) {
+                pageLoader.dashboard();
             }
             else {
                 $(".side-bar li").hide();
@@ -135,55 +135,33 @@ function getChild () {
     });
 }
 
-var asd = 0;
-
-function loadPage(pageName) {
-    $("#page-wrapper").load('./spa/' + pageName + '.html');
-        //requ  ire.un``oard')
-    if(asd === 0) {
-        alert('load');
-        require(['./js/dashboard']);
-        //asd = 1;
-    }
-    alert('done');
-}
-
 function repositionAddKids() {
     $('.addKids').css("height", $(window).height());
-    $('.addKids_panel').css("margin-top", ( $(window).height() - $('.addKids_panel').height() )/2 );
+    $('.addKids_panel').css("margin-top", ( $(window).height() - $('.addKids_panel').height() ) / 2);
 }
 
 
-$(document).ready(function() {
-    jwt = $.cookie('jwt');
-
-    if(jwt == null) {
-        $("#page-wrapper").load("./spa/signin.html");
-    }
-    else {
-        success_signin(null);
-    }
-
+$(document).ready(function () {
     $.ajax({        // addKids 불러오기
         type: 'GET',
         url: './spa/addKids.html',
         dataType: 'html',
-        success: function(html) {
+        success: function (html) {
             $('body').last().prepend(html);
             repositionAddKids();
             $('.addKids').hide();
 
-            $('.addKids_panel').click( function (e) {
+            $('.addKids_panel').click(function (e) {
                 e.stopPropagation();
             });
         },
-        error: function(result, status, err) {
-            alert("addKids.html 불러오기 실패\n"+err);
+        error: function (result, status, err) {
+            alert("addKids.html 불러오기 실패\n" + err);
         }
     });
 
     repositionAddKids();
-    $(window).resize (repositionAddKids);
+    $(window).resize(repositionAddKids);
 
     $("body").click(function () {
         $('.dropdown').children('ul').hide('down slow');
@@ -195,7 +173,7 @@ $(document).ready(function() {
         location.reload();
     });
 
-    $(".collapser").click(function() {
+    $(".collapser").click(function () {
         $(this).nextAll('.collapse').collapse('toggle');
     });
 
@@ -220,7 +198,7 @@ $(document).ready(function() {
         $(this).addClass('active');
 
 
-        switch( $(this).index() ) {
+        switch ($(this).index()) {
             case 0: // 전체 요약 선택
                 mainPage.load("./spa/dashboard.html");
                 break;
