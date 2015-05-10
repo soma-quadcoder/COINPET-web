@@ -60,6 +60,8 @@
         </div>
         <!-- Top Menu Items -->
         <ul class="nav navbar-right top-nav" style="display:none">
+
+
             <li class="dropdown">
                 <a href="#;" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-child"></i> 내 자녀 <b class="caret"></b></a>
                 <ul class="dropdown-menu message-dropdown">
@@ -73,33 +75,34 @@
                 </ul>
             </li>
 
-            <li class="dropdown">
-                <a href="#;" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell"></i> 알림 <b class="caret"></b></a>
-                <ul class="dropdown-menu alert-dropdown">
-                    <li>
-                        <a href="#;">알람 1 <span class="label label-default">1일전</span></a>
-                    </li>
-                    <li>
-                        <a href="#;">알람 2 <span class="label label-primary">1일전</span></a>
-                    </li>
-                    <li>
-                        <a href="#;">알람 3 <span class="label label-success">1일전</span></a>
-                    </li>
-                    <li>
-                        <a href="#;">알람 4 <span class="label label-info">1일전</span></a>
-                    </li>
-                    <li>
-                        <a href="#;">알람 5 <span class="label label-warning">1일전</span></a>
-                    </li>
-                    <li>
-                        <a href="#;">알림 6 <span class="label label-danger">1일</span></a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a href="#;">전체 보기</a>
-                    </li>
-                </ul>
-            </li>
+            <!-- 알람 메뉴 -->
+            <!--<li class="dropdown">-->
+                <!--<a href="#;" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell"></i> 알림 <b class="caret"></b></a>-->
+                <!--<ul class="dropdown-menu alert-dropdown">-->
+                    <!--<li>-->
+                        <!--<a href="#;">알람 1 <span class="label label-default">1일전</span></a>-->
+                    <!--</li>-->
+                    <!--<li>-->
+                        <!--<a href="#;">알람 2 <span class="label label-primary">1일전</span></a>-->
+                    <!--</li>-->
+                    <!--<li>-->
+                        <!--<a href="#;">알람 3 <span class="label label-success">1일전</span></a>-->
+                    <!--</li>-->
+                    <!--<li>-->
+                        <!--<a href="#;">알람 4 <span class="label label-info">1일전</span></a>-->
+                    <!--</li>-->
+                    <!--<li>-->
+                        <!--<a href="#;">알람 5 <span class="label label-warning">1일전</span></a>-->
+                    <!--</li>-->
+                    <!--<li>-->
+                        <!--<a href="#;">알림 6 <span class="label label-danger">1일</span></a>-->
+                    <!--</li>-->
+                    <!--<li class="divider"></li>-->
+                    <!--<li>-->
+                        <!--<a href="#;">전체 보기</a>-->
+                    <!--</li>-->
+                <!--</ul>-->
+            <!--</li>-->
             <li class="dropdown">
                 <a href="#;" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> 계정 <b class="caret"></b></a>
                 <ul class="dropdown-menu">
@@ -125,10 +128,10 @@
         <div id = "sidebar" class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav side-nav" style="display: none">
                 <li class="active">
-                    <a href="#;"><i class="fa fa-fw fa-dashboard"></i> 전체 요약</a>
+                    <a href="#;" onclick="loadPage('dashboard')"><i class="fa fa-fw fa-dashboard"></i> 전체 요약</a>
                 </li>
                 <li>
-                    <a href="#;"><i class="fa fa-fw fa-krw"></i> 저축 </a>
+                    <a href="#;" onclick="loadPage('dashboard')"><i class="fa fa-fw fa-krw"></i> 저축 </a>
                 </li>
                 <li>
                     <a href="#;"><i class="fa fa-fw fa-sellsy"></i> 목표 </a>
@@ -137,19 +140,41 @@
                     <a href="#;"><i class="fa fa-fw fa-trophy"></i> 퀘스트 </a>
                 </li>
                 <li>
-                    <a href="#;"><i class="fa fa-fw fa-space-shuttle"></i> 모험 </a
+                    <a href="#;"><i class="fa fa-fw fa-child"></i> 내 자녀 </a>
                 </li>
+
                 <!--<li>-->
-                    <!--<a href="javascript:;" data-toggle="collapse" data-target="#;demo"><i class="fa fa-fw fa-arrows-v"></i> Dropdown <i class="fa fa-fw fa-caret-down"></i></a>-->
-                    <!--<ul id="demo" class="collapse">-->
+                    <!--<a href="#;" class="collapser"><i class="fa fa-child"></i> 내 자녀 <b class="caret"></b></a>-->
+                    <!--<ul class="collapse">-->
                         <!--<li>-->
                             <!--<a href="#;">Dropdown Item</a>-->
                         <!--</li>-->
                         <!--<li>-->
                             <!--<a href="#;">Dropdown Item</a>-->
+                        <!--</li>-->
+                        <!--<li class="message-footer">-->
+                            <!--<div id="kids"></div>-->
+                            <!--<a href="#;" id="addKids"><i class="fa fa-plus"></i><b> 자녀 등록하기</b></a>-->
                         <!--</li>-->
                     <!--</ul>-->
                 <!--</li>-->
+
+                <!--<li>-->
+                    <!--<a href="#;" class="collapser"><i class="fa fa-child"></i> 내 자녀 <b class="caret"></b></a>-->
+                    <!--<ul class="collapse">-->
+                        <!--<li>-->
+                            <!--<a href="#;">Dropdown Item</a>-->
+                        <!--</li>-->
+                        <!--<li>-->
+                            <!--<a href="#;">Dropdown Item</a>-->
+                        <!--</li>-->
+                        <!--<li class="message-footer">-->
+                            <!--<div id="kids"></div>-->
+                            <!--<a href="#;" id="addKids"><i class="fa fa-plus"></i><b> 자녀 등록하기</b></a>-->
+                        <!--</li>-->
+                    <!--</ul>-->
+                <!--</li>-->
+
             </ul>
         </div>
         <!-- /.navbar-collapse -->

@@ -6,7 +6,6 @@ var jwt;
 var params;
 var child;
 var kids_selector;
-var selected_fk_kdis;
 var mainPage = $("#page-wrapper");
 var domain="";
 
@@ -43,15 +42,6 @@ function action_addKids() {
 }
 
 function action_signin() {
-
-    //$.ajax({
-    //    url: '/script.cgi',
-    //    type: 'DELETE',
-    //    success: function(result) {
-    //        // Do something with the result
-    //    }
-    //});
-
     var email = $("#inputEmail").val();
     var passwd = $("#inputPassword").val();
 
@@ -96,43 +86,66 @@ function getChild () {
         success: function(result) {
             child = result;
 
-            $.ajax({        // kids_selector 불러오기
-                type: 'GET',
-                url: './spa/kids_selector.html',
-                dataType: 'html',
-                success: function(html) {
-                    kids_selector = html;
-                    if(child.length)
-                    {
-                        //$.ajax({
-                        //    url: './spa/dashboard.html',
-                        //    dataType: 'html',
-                        //    success: function(html) {
-                        //        //dashboard html
-                        //        $("#page-wrapper").html(html);
-                        //    }
-                        //});
-                        $("#page-wrapper").load('./spa/dashboard.html');
+            if(child.length)
+            {
+                loadPage('dashboard');
+            }
+            else {
+                $(".side-bar li").hide();
+                $("#page-wrapper").load("./spa/no_child.html");
+            }
 
-                        require(["./js/dashboard.js"]);
-
-                        selected_fk_kdis = child[0].fk_kids;
-                        for(var i=0 ; i<child.length ; i++)
-                        {
-                            $('#kids').append(kids_selector.replace("name", child[i].name));
-                        }
-
-                    }
-                    else {
-                        $(".side-bar li").hide();
-                        $("#page-wrapper").load("./spa/no_child.html");
-                    }
-
-                }
-            });
+            // kids_selector 불러오기
+            //$.ajax({
+            //    type: 'GET',
+            //    url: './spa/kids_selector.html',
+            //    dataType: 'html',
+            //    success: function(html) {
+            //        kids_selector = html;
+            //        if(child.length)
+            //        {
+            //            //$.ajax({
+            //            //    url: './spa/dashboard.html',
+            //            //    dataType: 'html',
+            //            //    success: function(html) {
+            //            //        //dashboard html
+            //            //        $("#page-wrapper").html(html);
+            //            //    }
+            //            //});
+            //            $("#page-wrapper").load('./spa/dashboard.html');
+            //
+            //            require(["./js/dashboard.js"]);
+            //
+            //            selected_fk_kdis = child[0].fk_kids;
+            //            for(var i=0 ; i<child.length ; i++)
+            //            {
+            //                $('#kids').append(kids_selector.replace("name", child[i].name));
+            //            }
+            //
+            //        }
+            //        else {
+            //            $(".side-bar li").hide();
+            //            $("#page-wrapper").load("./spa/no_child.html");
+            //        }
+            //
+            //    }
+            //});
 
         }
     });
+}
+
+var asd = 0;
+
+function loadPage(pageName) {
+    $("#page-wrapper").load('./spa/' + pageName + '.html');
+        //requ  ire.un``oard')
+    if(asd === 0) {
+        alert('load');
+        require(['./js/dashboard']);
+        //asd = 1;
+    }
+    alert('done');
 }
 
 function repositionAddKids() {
@@ -169,6 +182,7 @@ $(document).ready(function() {
         }
     });
 
+    repositionAddKids();
     $(window).resize (repositionAddKids);
 
     $("body").click(function () {
@@ -179,6 +193,10 @@ $(document).ready(function() {
     $("#logout").click(function () {
         $.removeCookie('jwt');
         location.reload();
+    });
+
+    $(".collapser").click(function() {
+        $(this).nextAll('.collapse').collapse('toggle');
     });
 
     $(".dropdown").click(function (e) {
