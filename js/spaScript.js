@@ -114,6 +114,8 @@ function getChild () {
                         //});
                         $("#page-wrapper").load('./spa/dashboard.html');
 
+                        require(["./js/dashboard.js"]);
+
                         selected_fk_kdis = child[0].fk_kids;
                         for(var i=0 ; i<child.length ; i++)
                         {
