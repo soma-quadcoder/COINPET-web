@@ -14,18 +14,37 @@ define(function () {
         success_signin(null);
     }
 
+    $.ajax({        // addKids 불러오기
+        type: 'GET',
+        url: './spa/loading.html',
+        dataType: 'html',
+        success: function (html) {
+            $('body').last().prepend(html);
+            reposition();
+            $('.loading').hide();
+        },
+        error: function (result, status, err) {
+            alert("loading.html 불러오기 실패\n" + err);
+        }
+    });
+
     return {
-        dashboard: function() {
-            $('#page-wrapper').load('./spa/dashboard.html');
+        load: function(pageName) {
+            $('.loading').show();
+            $('#page-wrapper').load('./spa/' + pageName + '.html');
             require.undef(pageScript);
-            require(['dashboard']);
-            pageScript = 'dashboard';
+            require([pageName], function() {
+                setTimeout("$('.loading').hide()", 1000);
+            });
+            pageScript = pageName;
+
+            //$('.loading').hide();
+        },
+        dashboard: function() {
+            this.load('dashboard');
         },
         datatable: function() {
-            $('#page-warrper').load('./spa/datatable.html');
-            require.undef(pageScript);
-            require(['datatable']);
-            pageScript = 'datatable';
+            this.load('datatable');
         }
     };
 });

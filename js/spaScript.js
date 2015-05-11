@@ -135,9 +135,11 @@ function getChild() {
     });
 }
 
-function repositionAddKids() {
-    $('.addKids').css("height", $(window).height());
+function reposition() {
+    $('.popup').css("height", $(window).height());
     $('.addKids_panel').css("margin-top", ( $(window).height() - $('.addKids_panel').height() ) / 2);
+
+    $('.loading_panel').css("margin-top", ( $(window).height() - $('.loading_round').height() ) / 2);
 }
 
 
@@ -148,9 +150,8 @@ $(document).ready(function () {
         dataType: 'html',
         success: function (html) {
             $('body').last().prepend(html);
-            repositionAddKids();
+            reposition();
             $('.addKids').hide();
-
             $('.addKids_panel').click(function (e) {
                 e.stopPropagation();
             });
@@ -160,8 +161,7 @@ $(document).ready(function () {
         }
     });
 
-    repositionAddKids();
-    $(window).resize(repositionAddKids);
+    $(window).resize(reposition);
 
     $("body").click(function () {
         $('.dropdown').children('ul').hide('down slow');
@@ -196,25 +196,25 @@ $(document).ready(function () {
     $("#sidebar").children('ul').children('li').click(function () {
         $(this).siblings('li').removeClass('active');
         $(this).addClass('active');
-
-
-        switch ($(this).index()) {
-            case 0: // 전체 요약 선택
-                mainPage.load("./spa/dashboard.html");
-                break;
-            case 1: // 저축 선택
-                mainPage.load("./spa/dashboard.html");
-                break;
-            case 2: // 용돈 기입장 선택
-                mainPage.load("./spa/dashboard.html");
-                break;
-            case 3: // 퀘스트 선택
-                mainPage.load("./spa/dashboard.html");
-                break;
-            case 4: // 펫 선택
-                mainPage.load("./spa/dashboard.html");
-                break;
-        }
+        //
+        //
+        //switch ($(this).index()) {
+        //    case 0: // 전체 요약 선택
+        //        mainPage.load("./spa/dashboard.html");
+        //        break;
+        //    case 1: // 저축 선택
+        //        mainPage.load("./spa/dashboard.html");
+        //        break;
+        //    case 2: // 용돈 기입장 선택
+        //        mainPage.load("./spa/dashboard.html");
+        //        break;
+        //    case 3: // 퀘스트 선택
+        //        mainPage.load("./spa/dashboard.html");
+        //        break;
+        //    case 4: // 펫 선택
+        //        mainPage.load("./spa/dashboard.html");
+        //        break;
+        //}
     });
 
 });
