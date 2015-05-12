@@ -63,49 +63,6 @@
         </div>
         <!-- Top Menu Items -->
         <ul class="nav navbar-right top-nav" style="display:none">
-
-
-            <li class="dropdown">
-                <a href="#;" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-child"></i> 내 자녀 <b class="caret"></b></a>
-                <ul class="dropdown-menu message-dropdown">
-                    <!-- kids_selector가 들어가야 할 -->
-
-                    <!-- kids_selector가 들어가는 곳 끝 -->
-                    <li class="message-footer">
-                        <div id="kids"></div>
-                        <a href="#;" id="addKids"><i class="fa fa-plus"></i><b> 자녀 등록하기</b></a>
-                    </li>
-                </ul>
-            </li>
-
-            <!-- 알람 메뉴 -->
-            <!--<li class="dropdown">-->
-                <!--<a href="#;" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell"></i> 알림 <b class="caret"></b></a>-->
-                <!--<ul class="dropdown-menu alert-dropdown">-->
-                    <!--<li>-->
-                        <!--<a href="#;">알람 1 <span class="label label-default">1일전</span></a>-->
-                    <!--</li>-->
-                    <!--<li>-->
-                        <!--<a href="#;">알람 2 <span class="label label-primary">1일전</span></a>-->
-                    <!--</li>-->
-                    <!--<li>-->
-                        <!--<a href="#;">알람 3 <span class="label label-success">1일전</span></a>-->
-                    <!--</li>-->
-                    <!--<li>-->
-                        <!--<a href="#;">알람 4 <span class="label label-info">1일전</span></a>-->
-                    <!--</li>-->
-                    <!--<li>-->
-                        <!--<a href="#;">알람 5 <span class="label label-warning">1일전</span></a>-->
-                    <!--</li>-->
-                    <!--<li>-->
-                        <!--<a href="#;">알림 6 <span class="label label-danger">1일</span></a>-->
-                    <!--</li>-->
-                    <!--<li class="divider"></li>-->
-                    <!--<li>-->
-                        <!--<a href="#;">전체 보기</a>-->
-                    <!--</li>-->
-                <!--</ul>-->
-            <!--</li>-->
             <li class="dropdown">
                 <a href="#;" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> 계정 <b class="caret"></b></a>
                 <ul class="dropdown-menu">
@@ -143,7 +100,7 @@
                     <a href="#;" onclick="pageLoader.dashboard()"><i class="fa fa-fw fa-trophy"></i> 퀘스트 </a>
                 </li>
                 <li>
-                    <a href="#;" onclick="pageLoader.dashboard()"><i class="fa fa-fw fa-child"></i> 내 자녀 </a>
+                    <a href="#;" onclick="pageLoader.load('myKids')"><i class="fa fa-fw fa-child"></i> 내 자녀 </a>
                 </li>
 
                 <!--<li>-->
