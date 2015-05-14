@@ -7,12 +7,18 @@
 define(function() {
     var windowWidth = window.innerWidth;
     alert(windowWidth);
+
+    $('#upload').click(function() {
+        $( ":file").click();
+    });
+
     $('#kidsimgc').click(function() {
         $( ":file").click();
     });
 
     $('#kidsimg').mouseenter(function() {
-        $('#kidsimgc').show()
+        if(window.innerWidth >= 768)
+            $('#kidsimgc').show();
     });
     $('#kidsimgc').mouseout(function() {
         $('#kidsimgc').hide();

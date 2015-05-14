@@ -244,7 +244,7 @@ ul.alert-dropdown {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-@media {
+@media (min-width: 360px) {
     .saving-title p {
         font-size: 20px;
     }
@@ -256,8 +256,14 @@ ul.alert-dropdown {
         font-size: 2em;
     }
 
-    .kidsinfo {
-        height: 120px;
+    .kids_panel {
+        width: 257.5px;
+        height: 156px;
+    }
+
+    .kids_image {
+        width : 120px;
+        height :120px;
     }
 
     .kidsimg {
@@ -278,9 +284,16 @@ ul.alert-dropdown {
         font-size: 2em;
     }
 
-    .kidsinfo {
-        height: 120px;
+    .kids_panel {
+        width: 345px;
+        height: 156px;
     }
+
+    .kids_image {
+        width : 120px;
+        height :120px;
+    }
+
     .kidsimg {
         width : 120px;
         height :120px;
@@ -300,13 +313,23 @@ ul.alert-dropdown {
         font-size: 2em;
     }
 
-    .kidsinfo {
+    .kids_panel {
+        width: 380.828px;
         height: 120px;
+    }
+
+    .kids_image {
+        width : 120px;
+        height :120px;
     }
 
     .kidsimg {
         width : 120px;
         height :120px;
+    }
+
+    #upload {
+        display: none;
     }
 }
 
@@ -323,8 +346,14 @@ ul.alert-dropdown {
         font-size: 2em;
     }
 
-    .kidsinfo {
+    .kids_panel {
+        width: 480px;
         height: 170px;
+    }
+
+    .kids_image {
+        width : 170px;
+        height :170px;
     }
 
     .kidsimg {
@@ -346,8 +375,14 @@ ul.alert-dropdown {
         font-size: 2em;
     }
 
-    .kidsinfo {
+    .kids_panel {
+        width: 480px;
         height: 170px;
+    }
+
+    .kids_image {
+        width : 170px;
+        height :170px;
     }
 
     .kidsimg {
@@ -356,12 +391,23 @@ ul.alert-dropdown {
     }
 }
 
-.kidsdetail {
+#upload {
+    width: 100%;
+}
+
+.kids_detail {
+    margin-left: 10px;
+    display: table;
     position: relative;
     top: 50%;
     -webkit-transform: translateY(-50%);
     -ms-transform: translateY(-50%);
-    transform: translateY(-50%)
+    transform: translateY(-50%);
+}
+
+.kids_panel {
+    margin: 0 auto;
+    display: flex;
 }
 
 .text-block {
