@@ -396,6 +396,7 @@ ul.alert-dropdown {
 }
 
 .kids_detail {
+    float: left;
     margin-left: 10px;
     display: table;
     position: relative;
@@ -405,9 +406,12 @@ ul.alert-dropdown {
     transform: translateY(-50%);
 }
 
+.kids_image {
+    float: left;
+}
+
 .kids_panel {
     margin: 0 auto;
-    display: flex;
 }
 
 .text-block {
