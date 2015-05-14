@@ -5,7 +5,8 @@
 //alert('myKids.js is loaded');
 
 define(function() {
-
+    var windowWidth = window.innerWidth;
+    alert(windowWidth);
     $('#kidsimgc').click(function() {
         $( ":file").click();
     });
