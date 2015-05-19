@@ -94,43 +94,6 @@ function getChild() {
                 $(".side-bar li").hide();
                 $("#page-wrapper").load("./spa/no_child.html");
             }
-
-            // kids_selector 불러오기
-            //$.ajax({
-            //    type: 'GET',
-            //    url: './spa/kids_selector.html',
-            //    dataType: 'html',
-            //    success: function(html) {
-            //        kids_selector = html;
-            //        if(child.length)
-            //        {
-            //            //$.ajax({
-            //            //    url: './spa/dashboard.html',
-            //            //    dataType: 'html',
-            //            //    success: function(html) {
-            //            //        //dashboard html
-            //            //        $("#page-wrapper").html(html);
-            //            //    }
-            //            //});
-            //            $("#page-wrapper").load('./spa/dashboard.html');
-            //
-            //            require(["./js/dashboard.js"]);
-            //
-            //            selected_fk_kdis = child[0].fk_kids;
-            //            for(var i=0 ; i<child.length ; i++)
-            //            {
-            //                $('#kids').append(kids_selector.replace("name", child[i].name));
-            //            }
-            //
-            //        }
-            //        else {
-            //            $(".side-bar li").hide();
-            //            $("#page-wrapper").load("./spa/no_child.html");
-            //        }
-            //
-            //    }
-            //});
-
         }
     });
 }
@@ -144,23 +107,6 @@ function reposition() {
 
 
 $(document).ready(function () {
-    $.ajax({        // addKids 불러오기
-        type: 'GET',
-        url: './spa/addKids.html',
-        dataType: 'html',
-        success: function (html) {
-            $('body').last().prepend(html);
-            reposition();
-            $('.addKids').hide();
-            $('.addKids_panel').click(function (e) {
-                e.stopPropagation();
-            });
-        },
-        error: function (result, status, err) {
-            alert("addKids.html 불러오기 실패\n" + err);
-        }
-    });
-
     $(window).resize(reposition);
 
     $("body").click(function () {
@@ -187,11 +133,6 @@ $(document).ready(function () {
     $("#sidebarmenu").click(function () {
         $("#sidebar").slideToggle('slow');
     });
-
-    $("#addKids").click(function () {
-        $('.addKids').show('down').css("display", "block");
-    });
-
 
     $("#sidebar").children('ul').children('li').click(function () {
         $(this).siblings('li').removeClass('active');
