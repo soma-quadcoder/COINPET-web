@@ -1,0 +1,7 @@
+# Created by .ignore support plugin (hsz.mobi)
+.idea
+._.DS_Store
+*/._.DS_Store
+*/*/._.DS_Store
+
+./js/domain.js
