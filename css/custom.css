@@ -1,0 +1,109 @@
+
+@media all and (max-width: 459px)
+{
+    .kidsimg {
+        width:100px;
+        height:100px;
+        margin:0 auto;
+    }
+
+    .kids_detail {
+        display: table-footer-group;
+    }
+
+    .kids_detail p {
+        vertical-align: middle;
+        display: table-cell;
+    }
+
+    .kids_detail p {
+        font-size: 14px;
+    }
+
+    .kids_detail b {
+        font-size: 20px;
+    }
+}
+
+@media all and (min-width:460px) {
+
+    .kidsimg {
+        width:100px;
+        height:100px;
+
+        vertical-align:middle;
+        display: table-cell;
+    }
+
+    .kids_detail {
+        vertical-align:middle;
+        display: table-cell;
+    }
+
+    .kids_detail p {
+        vertical-align: middle;
+        display: table-cell;
+    }
+
+    .kids_detail p {
+        font-size: 14px;
+    }
+
+    .kids_detail b {
+        font-size: 20px;
+    }
+
+}
+
+@media (min-width: 460px) {
+}
+
+@media (min-width: 768px) {
+
+}
+
+@media (min-width: 992px) {
+
+    .kids_detail p {
+        font-size: 20px;
+    }
+
+    .kids_detail b {
+        font-size: 30px;
+    }
+
+}
+
+.kidsimgc {
+    padding-top : 80px;
+    display:none;
+    position:absolute;
+    background-color: rgba(0,0,0, 0.7);
+}
+
+a.kidsimgc{
+    color:#ffffff;
+    text-decoration:none;
+    text-align: center;
+}
+
+.kidsimgo {
+    background-image: url('../image/kids/default.png');
+    background-size: cover;
+}
+
+.kids_detail div {
+    /*text-align: -webkit-center;*/
+    position: relative;
+    display: table;
+    margin: 0 auto;
+}
+
+.kids_detail div div {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.kids_detail div div:nth-child(1) {
+    padding-right: 10px;
+}
