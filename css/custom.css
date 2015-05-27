@@ -7,10 +7,6 @@
         margin:0 auto;
     }
 
-    .kids_detail {
-        display: table-footer-group;
-    }
-
     .kids_detail p {
         vertical-align: middle;
         display: table-cell;
@@ -35,11 +31,6 @@
         display: table-cell;
     }
 
-    .kids_detail {
-        vertical-align:middle;
-        display: table-cell;
-    }
-
     .kids_detail p {
         vertical-align: middle;
         display: table-cell;
@@ -51,6 +42,30 @@
 
     .kids_detail b {
         font-size: 20px;
+    }
+
+    .kids_select {
+        display : table;
+    }
+
+    .kids_select div {
+        display: table-cell;
+        vertical-align: middle;
+    }
+
+    .kids_select div div {
+        display: block;
+        position: relative;
+        margin: 0 auto;
+    }
+
+    .kids_select div div input {
+        margin-right:4px;
+    }
+
+    .insert_select div:nth-child(1) {
+        font-weight: bold;
+        margin-bottom: 4px;
     }
 
 }
