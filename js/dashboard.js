@@ -1,8 +1,36 @@
 /**
  * Created by jeon on 2015. 5. 23..
  */
+function findChild(search) {
+    if( !isNaN(search) )
+    {
+        for(var i in child)
+        {
+            if (child[i].fk_kids == search)
+                return child[i].name;
+        }
+    }
+    else
+    {
+        for(var i in child)
+        {
+            if (child[i].name == search)
+                return child[i].fk_kids;
+        }
+    }
+
+    return 0;
+}
 
 $(document).ready(function() {
+
+    "use strict";
+
+    if(!jwt || !child)
+    {
+        alert('로그인 정보가 없습니다. 다시 로그인해 주세요.');
+        $(location).attr('href','./login.html');
+    }
 
     $.ajax({
         type: 'GET',
@@ -19,7 +47,47 @@ $(document).ready(function() {
             alert("dashboard_kids.html 불러오기 실패\n" + err);
         }
     });
+
+    $.ajax({
+        type: 'GET',
+        url: './html component/dashboard/quest.html',
+        dataType: 'html',
+        success: function (html) {
+
+            $.ajax({
+                type: 'GET',
+                url: domain+'/api/getQuestInfo/0',
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", jwt);
+                },
+                success: function (result) {
+
+                    alert('done');
+                },
+                error: function (result, statu, err) {
+                    alert("자녀의 퀘스트 정보를 받아오는데 실패하였습니다.\n" + err);
+                }
+            });
+
+            for(var i=0 ; i<child.length ; i++)
+            {
+                calculateQuest(child[i].fk_kids, html);
+            }
+        },
+        error: function (result, statu, err) {
+            alert("dashboard_quest.html 불러오기 실패\n" + err);
+        }
+    });
 });
+
+function calculateQuest(fk_kids, html)
+{
+    $('#insertQuest').prepend(html
+        .replace(/_percent/g, '70')
+        .replace('_fk_kids', fk_kids)
+        .replace('_name', findChild(fk_kids)));
+}
 
 function calculateWeek(fk_kids, html){
 
@@ -50,8 +118,10 @@ function calculateWeek(fk_kids, html){
             for (var i = 0; i < 7; i++)
                 if (savingday[i] === true) savingCount++;
 
-            money = money / savingCount;
+            if(savingCount)
+                money = parseInt(money / savingCount);
             $('#insertWeek').prepend(html
+                .replace('_name', findChild(fk_kids))
                 .replace('_fk_kids', fk_kids)
                 .replace('_money', money)
                 .replace('_count', savingCount)

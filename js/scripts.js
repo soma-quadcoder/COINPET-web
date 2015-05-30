@@ -14,6 +14,15 @@ $(document).ready(function(){
 		child = JSON.parse(child);
 
 	if(jwt) {
+
+		try
+		{
+			reloadIndex();
+		}
+		catch(e)
+		{
+		}
+
 		$('#btn-login').text('로그아웃');
 		$('#btn-login').click(function() {
 			$.removeCookie('jwt');

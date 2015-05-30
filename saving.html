@@ -52,13 +52,15 @@
 				
 					<div class="row nav-menu">
 						<div class="col-md-2 col-sm-3 columns">
-							<img class="logo logo-light" alt="Logo" src="img/logo-light.png">
-							<img class="logo logo-dark" alt="Logo" src="img/logo-dark.png">
+							<a href="index.html">
+								<img class="logo logo-light logo-wide" alt="Logo" src="img/logo-light.png">
+								<img class="logo logo-dark logo-wide" alt="Logo" src="img/logo-dark.png">
+							</a>
 						</div>
 					
 						<div class="col-md-10 col-sm-9 columns">
 							<ul class="menu">
-								<li><a href="#empty-header">요약 </a></li><li><a href="#empty-header">저축 </a></li><li><a href="#empty-header">목표</a></li><li><a href="#empty-header">퀘스트</a></li>
+								<li><a href="./dashboard.html">요약 </a></li><li><a href="./saving.html">저축 </a></li><li><a href="./goal.html">목표</a></li><li><a href="./quest.html">퀘스트</a></li>
 								
 								
 								
@@ -130,7 +132,7 @@
 						<li class="clearfix active">
 							<div class="row">
 								<div class="col-sm-12 text-center">
-									<h1>저번주, 이번주동안 저축한 금액입니다.</h1>
+									<h1>일주일동안 저축한 금액입니다.</h1>
 								</div>
 							</div>
 
@@ -141,7 +143,7 @@
 
 								<div class="col-sm-2 kids_select" style="background-color: #CCCC52; height: 400px">
 									<div>
-										<div class="insert_select">
+										<div id="week_select" class="insert_select">
 											<div style="text-align: center">자녀 선택</div>
 										</div>
 									</div>
@@ -164,8 +166,14 @@
 								<div class="col-sm-1">
 									<p class="lead"> </p>
 								</div>
-
-								<div class="col-sm-10" style="height:400px;">
+								<div class="col-sm-2 kids_select" style="background-color: #CCCC52; height: 400px">
+									<div>
+										<div id="day_select" class="insert_select">
+											<div style="text-align: center">자녀 선택</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-sm-8" style="height:400px;">
 
 									<p class="lead">자녀들의 일일 저축 금액입니다.<br></p>
 									<canvas id="dayChart"></canvas>
@@ -232,7 +240,7 @@
         <script src="js/scripts.js"></script>
 
 		<!-- jquery.cookie.js 및 페이지 script-->
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.js"></script>
+		<script src="js/Chart.js"></script>
 		<script src="js/jquery.cookie.js"></script>
 		<script src="js/saving.js"></script>
 

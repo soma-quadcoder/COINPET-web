@@ -60,7 +60,7 @@ $(document).ready(function() {
                 }
                 else {
                     // 등록된 자녀가 없음.
-                    alert('등록된 자녀가 있습니다.');
+                    alert('등록된 자녀가 없습니다.');
                 }
             }
         });

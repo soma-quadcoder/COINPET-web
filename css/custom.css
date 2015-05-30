@@ -1,10 +1,18 @@
 
 @media all and (max-width: 459px)
 {
-    .kidsimg {
+    div.kidsimg {
+        width:100px;
+        height:120px;
+        margin:0 auto;
+
+        text-align: center;
+    }
+
+    img.kidsimg
+    {
         width:100px;
         height:100px;
-        margin:0 auto;
     }
 
     .kids_detail p {
@@ -28,12 +36,12 @@
         height:100px;
 
         vertical-align:middle;
-        display: table-cell;
+        float: left;
+        text-align: center;
     }
 
     .kids_detail p {
         vertical-align: middle;
-        display: table-cell;
     }
 
     .kids_detail p {
@@ -115,10 +123,14 @@ a.kidsimgc{
 }
 
 .kids_detail div div {
-    display: table-cell;
+    float: left;
     vertical-align: middle;
 }
 
 .kids_detail div div:nth-child(1) {
     padding-right: 10px;
+}
+
+#insertWeek > div {
+    padding-bottom: 50px;
 }
