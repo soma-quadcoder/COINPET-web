@@ -76,6 +76,17 @@
         margin-bottom: 4px;
     }
 
+    .goal_info div:nth-child(2n+1) {
+        font-size: 1.4em;
+        font-weight: bold;
+        margin-bottom: 4px;
+    }
+
+    .goal_info div:nth-child(2n) {
+        padding-bottom: 1em;
+        font-size: 1.2em;
+    }
+
 }
 
 @media (min-width: 460px) {
@@ -101,11 +112,11 @@
     padding-top : 80px;
     display:none;
     position:absolute;
-    background-color: rgba(0,0,0, 0.7);
+    background-color: rgba(255,255,255, 0.7);
 }
 
 a.kidsimgc{
-    color:#ffffff;
+    color:#000;
     text-decoration:none;
     text-align: center;
 }
@@ -133,4 +144,55 @@ a.kidsimgc{
 
 #insertWeek > div {
     padding-bottom: 50px;
+}
+
+.popup {
+    width: 100%;
+    position: fixed;
+    top: 0px;
+    z-index: 10000;
+    display: none;
+    background-color: rgba(0,0,0, 0.7);
+}
+
+.quest_body {
+    margin:0 auto;
+}
+
+#quest_kidsSelect {
+    width:240px;
+}
+
+#quest_kidsSelect > div {
+    margin-bottom: 30px;
+}
+
+#quest_content div {
+    display: table;
+    margin: 0 auto;
+    padding-bottom: 10px;
+}
+
+#quest_content div h4 {
+    display: table-cell;
+    width: 120px;
+    padding-right: 20px;
+}
+
+#quest_content div input {
+    display: table-cell;
+    width: 150px;
+}
+
+.quest_button {
+    margin : 0 auto;
+    margin-top: 20px;
+    display: table;
+}
+
+.quest_button > button {
+    margin : 0 5px;
+    width: 10px;
+    font-size: 14px;
+    display: table-cell;
 }

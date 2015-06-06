@@ -10,29 +10,19 @@ var dayctx;
 var weekChart;
 var dayChart;
 
-function findChild(search) {
-    if( !isNaN(search) )
-    {
-        for(var i in child)
-        {
-            if (child[i].fk_kids == search)
-                return child[i].name;
-        }
-    }
-    else
-    {
-        for(var i in child)
-        {
-            if (child[i].name == search)
-                return child[i].fk_kids;
-        }
-    }
+var color = [{
+    fillColor: "rgba(220,220,220,0.5)",
+    strokeColor: "rgba(220,220,220,0.8)",
+    highlightFill: "rgba(220,220,220,0.75)",
+    highlightStroke: "rgba(220,220,220,1)"
+},{
+    fillColor: "rgba(151,187,205,0.5)",
+    strokeColor: "rgba(151,187,205,0.8)",
+    highlightFill: "rgba(151,187,205,0.75)",
+    highlightStroke: "rgba(151,187,205,1)"
+}];
 
-    return 0;
-}
-
-var options =
-{
+var options = {
     //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
     scaleBeginAtZero : true,
 
@@ -69,36 +59,28 @@ var options =
 };
 
 function week_drawChart() {
-
     var weekLabelDate;
     var weekLabels;
     var weekDataset;
-    var weekDataset_prev;
     var week = ['일','월','화','수','목','금','토'];
     var weekData = {
         datasets: [
             {
                 label: "My First dataset",
-                fk_kids: 0,
-                fillColor: "rgba(220,220,220,0.5)",
-                strokeColor: "rgba(220,220,220,0.8)",
-                highlightFill: "rgba(220,220,220,0.75)",
-                highlightStroke: "rgba(220,220,220,1)"
+                fk_kids: 0
             }
         ]
     };
 
     for (var fk_kids in week_selectedChild) {
+        if(week_selectedChild[fk_kids].selected == false || fk_kids == "length") continue;
+
         weekLabelDate = new Date();
-        weekLabelDate_prev = new Date();
-        weekLabelDate_prev.setDate(weekLabelDate.getDate() - 7);
         weekDataset = new Array();
-        weekDataset_prev = new Array();
         weekLabels = new Array();
 
         for (var i = 0; i < 7; i++) {
             var index_date = weekLabelDate.yyyymmdd();
-            var index_date_prev = weekLabelDate_prev.yyyymmdd();
 
             dayMoney = 0;
             if (saving[index_date]) {
@@ -107,26 +89,18 @@ function week_drawChart() {
             }
             weekDataset.unshift(dayMoney);
 
-            dayMoney = 0;
-            if (saving[index_date_prev]) {
-                for (var index in saving[index_date_prev][fk_kids])
-                    dayMoney += saving[index_date_prev][fk_kids][index].now_cost;
-            }
-            weekDataset_prev.unshift(dayMoney);
-
             weekLabels.unshift(index_date);
             weekData.labels = weekLabels;
             weekLabelDate.setDate(weekLabelDate.getDate() - 1);
-            weekLabelDate_prev.setDate(weekLabelDate_prev.getDate() - 1);
         }
 
         weekData.datasets[weekData.datasets.length] = JSON.parse(JSON.stringify(weekData.datasets[0]));
         weekData.datasets[weekData.datasets.length - 1].data = weekDataset;
-        weekData.datasets[weekData.datasets.length - 1].label = findChild(fk_kids)+'의 이번주 저축 금액';
-
-        //weekData.datasets[weekData.datasets.length] = JSON.parse(JSON.stringify(weekData.datasets[0]));
-        //weekData.datasets[weekData.datasets.length - 1].data = weekDataset_prev;
-        //weekData.datasets[weekData.datasets.length - 1].label = findChild(fk_kids)+'의 저번주 저축 금액';
+        weekData.datasets[weekData.datasets.length - 1].label = findChild(fk_kids);
+        for(var key in week_selectedChild[fk_kids].color)
+        {
+            weekData.datasets[weekData.datasets.length - 1][key] = week_selectedChild[fk_kids].color[key];
+        }
     }
     weekData.datasets.shift();
     console.log('create week chart data is done.');
@@ -148,17 +122,15 @@ function day_drawChart() {
         datasets: [
             {
                 label: "My First dataset",
-                fk_kids: 0,
-                fillColor: "rgba(220,220,220,0.5)",
-                strokeColor: "rgba(220,220,220,0.8)",
-                highlightFill: "rgba(220,220,220,0.75)",
-                highlightStroke: "rgba(220,220,220,1)"
+                fk_kids: 0
             }
         ]
     };
 
     for(var fk_kids in day_selectedChild)
     {
+        if(day_selectedChild[fk_kids].selected == false || fk_kids == "length") continue;
+
         dayDataset = new Array();
         dayLabels = new Array();
 
@@ -175,6 +147,10 @@ function day_drawChart() {
         dayData.labels = dayLabels;
         dayData.datasets[dayData.datasets.length] = JSON.parse(JSON.stringify(dayData.datasets[0]));
         dayData.datasets[dayData.datasets.length -1].data = dayDataset;
+        for(var key in day_selectedChild[fk_kids].color)
+        {
+            dayData.datasets[dayData.datasets.length - 1][key] = day_selectedChild[fk_kids].color[key];
+        }
     }
     dayData.datasets.shift();
     console.log('create day chart data is done.');
@@ -194,13 +170,6 @@ $(document).ready( function() {
         alert('로그인 정보가 없습니다. 다시 로그인해 주세요.');
         $(location).attr('href','./index.html');
     }
-
-    Date.prototype.yyyymmdd = function() {
-        var yyyy = this.getFullYear().toString();
-        var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
-        var dd  = this.getDate().toString();
-        return yyyy +'-'+ (mm[1]?mm:"0"+mm[0]) +'-'+ (dd[1]?dd:"0"+dd[0]); // padding
-    };
 
     function fitToContainer(target) {
 
@@ -232,37 +201,41 @@ $(document).ready( function() {
         }
     }
 
-
     // Get context with jQuery - using jQuery's .get() method.
     weekctx = $("#weekChart").get(0).getContext("2d");
     dayctx = $("#dayChart").get(0).getContext("2d");
 
     week_selectedChild.length = 0;
-    day_selectedChild.length = 0
-    ;
-    for(var i=0 ; i<child.length ; i++) {
-        var _selector = "<div><input type='checkbox' name='_fk_kids' checked>_name</div>";
+    day_selectedChild.length = 0;
+
+    child.forEach( function(value, index) {
+        var _selector = "<div style='text-align: center'><input type='checkbox' name='_fk_kids' checked>_name <span style='width:1em;height:1em;display:inline-block;  background-color: #fff}'><span><span style='width:1em;height:1em;display:block;  background-color: _color; border-style: solid; border-color: _bcolor;}'><span></div>";
         $('#week_select').append(_selector
-            .replace('_name', child[i].name)
-            .replace('_fk_kids', child[i].fk_kids));
+            .replace('_name', value.name)
+            .replace('_fk_kids', value.fk_kids)
+            .replace('_color', color[index].fillColor)
+            .replace('_bcolor', color[index].strokeColor));
         $('#day_select').append(_selector
-            .replace('_name', child[i].name)
-            .replace('_fk_kids', child[i].fk_kids));
-        week_selectedChild[child[i].fk_kids] = true;
-        day_selectedChild[child[i].fk_kids] = true;
+            .replace('_name', value.name)
+            .replace('_fk_kids', value.fk_kids)
+            .replace('_color', color[index].fillColor)
+            .replace('_bcolor', color[index].strokeColor));
+        week_selectedChild[value.fk_kids] = {};
+        week_selectedChild[value.fk_kids].selected = true;
+        week_selectedChild[value.fk_kids].color = color[index];
+        day_selectedChild[value.fk_kids] = {};
+        day_selectedChild[value.fk_kids].selected = true;
+        day_selectedChild[value.fk_kids].color = color[index];
 
         week_selectedChild.length++;
         day_selectedChild.length++;
-    }
+    });
 
 
     $.ajax({
         type: 'GET',
         url: domain + '/api/saving/',
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader("Authorization", jwt);
-        },
-        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        headers: {"Authorization": jwt},
         success: function (result) {
 
             if (result.length == 0) {
@@ -283,18 +256,18 @@ $(document).ready( function() {
     $('#day_select div input').change(function(e) {
         if(this.checked)
         {
-            day_selectedChild[this.name] = this.checked;
+            day_selectedChild[this.name].selected = true;
             day_selectedChild.length++;
         }
         else
         {
-            delete day_selectedChild[this.name];
+            day_selectedChild[this.name].selected = false;
             day_selectedChild.length--;
 
             if(day_selectedChild.length == 0)
             {
                 $(this).prop( "checked", true );
-                day_selectedChild[this.name] = this.checked;
+                day_selectedChild[this.name].selected = true;
                 day_selectedChild.length++;
             }
         }
@@ -304,18 +277,18 @@ $(document).ready( function() {
     $('#week_select div input').change(function(e) {
         if(this.checked)
         {
-            week_selectedChild[this.name] = this.checked;
+            week_selectedChild[this.name].selected = true;
             week_selectedChild.length++;
         }
         else
         {
-            delete week_selectedChild[this.name];
+            week_selectedChild[this.name].selected = false;
             week_selectedChild.length--;
 
             if(week_selectedChild.length == 0)
             {
                 $(this).prop( "checked", true );
-                week_selectedChild[this.name] = this.checked;
+                week_selectedChild[this.name].selected = true;
                 week_selectedChild.length++;
             }
         }

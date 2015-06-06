@@ -1,0 +1,59 @@
+<div class='addQuest popup'>
+        <div class="col-xs-1 col-sm-2 col-md-3 col-lg-4"></div>
+        <div class="col-xs-10 col-sm-8 col-md-6 col-lg-4">
+            <div class="panel_add panel panel-primary">
+                <div class="panel-heading text-center">
+                    <h2 style="color:inherit"> 퀘스트 만들기 </h2>
+                </div>
+                <div class="panel-body">
+                    <div id="add_select" style="position:relative">
+                        <h3 style="margin-bottom: 20px;">누구에게 퀘스트를 보내시겠습니까?</h3>
+
+                        <div class="row">
+                            <div class="quest_body" id="quest_kidsSelect">
+
+                            </div>
+                        </div>
+                        <div class="quest_button">
+                            <button class="btn btn-primary btn-block" onclick="$('.popup').hide();">취소</button>
+                            <button class="btn btn-primary btn-block btn-filled" onclick="$('#add_select').fadeOut(400, function(){$('#add_content').fadeIn()})">다음</button>
+                        </div>
+                        <div class="text-right">
+                            <p></p>
+                            <small>돌아갈려면 창 밖을 클릭하세요.</small>
+                        </div>
+                    </div>
+
+                    <div id="add_content" style="display:none; position:relative">
+                        <h3 style="margin-bottom: 20px;">퀘스트 내용을 채워주세요.</h3>
+
+                        <div class="row">
+                            <div class="quest_body" id="quest_content">
+                                <div>
+                                    <h4>퀘스트 내용</h4>
+                                    <input id="content" type="text" />
+                                </div>
+                                <div>
+                                    <h4>시작 날짜</h4>
+                                    <input id="startDate" type="date" />
+                                </div>
+                                <div>
+                                    <h4>모아 에너지</h4>
+                                    <input id="point" type="number" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="quest_button">
+                            <button class="btn btn-primary btn-block" onclick="$('#add_content').fadeOut(400, function(){$('#add_select').fadeIn()})">이전</button>
+                            <button class="btn btn-primary btn-block btn-filled" onclick="submitQuest();">만들기</button>
+                        </div>
+                        <div class="text-right">
+                            <p></p>
+                            <small>돌아갈려면 창 밖을 클릭하세요.</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-1 col-sm-2 col-md-3 col-lg-4"></div>
+</div>
