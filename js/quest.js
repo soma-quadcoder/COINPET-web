@@ -272,8 +272,16 @@ function calculateQuest(fk_kids, quest_data, html)
 
     var type_bar = '<li><span>_type _percent%</span><div class="skill-bar-holder"><div class="skill-capacity" style="width:_percent%"></div></div></li>';
     $.each(quest_type_array, function(index, value) {
+		var label;
+		if(value[1] == "study")
+    		label = '<span class="label label-primary">'+value[0]+'</span>';
+    	else if(value[1] == "exercise")
+    		label = '<span class="label label-success">'+value[0]+'</span>';
+    	else
+    		label = '<span class="label label-default">'+value[0]+'</span>';
+
         $('#insert_quest_type'+fk_kids).append(type_bar
-            .replace('_type', value[0])
+            .replace('_type', label)
             .replace(/_percent/g, Math.round(value[2]*100)/100));
     });
 
