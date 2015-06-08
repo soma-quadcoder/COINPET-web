@@ -134,9 +134,9 @@ function day_drawChart() {
         dayDataset = new Array();
         dayLabels = new Array();
 
+        dayMoney = 0;
         for(var index_date in saving)
         {
-            dayMoney = 0;
             for(var index in saving[index_date][fk_kids])
                 dayMoney += saving[index_date][fk_kids][index].now_cost;
             dayDataset.push(dayMoney);
@@ -147,6 +147,8 @@ function day_drawChart() {
         dayData.labels = dayLabels;
         dayData.datasets[dayData.datasets.length] = JSON.parse(JSON.stringify(dayData.datasets[0]));
         dayData.datasets[dayData.datasets.length -1].data = dayDataset;
+        dayData.datasets[dayData.datasets.length -1].label = findChild(fk_kids);
+
         for(var key in day_selectedChild[fk_kids].color)
         {
             dayData.datasets[dayData.datasets.length - 1][key] = day_selectedChild[fk_kids].color[key];

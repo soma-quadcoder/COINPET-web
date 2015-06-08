@@ -56,6 +56,8 @@ var options =
 
 function goal_drawChart(fk_kids) {
 
+    console.log('goal_drawChart('+fk_kids+')');
+
     var labels;
     var dataset_line;
     var dataset_bar;
@@ -121,8 +123,8 @@ function goal_drawChart(fk_kids) {
     data.datasets[1].data = dataset_bar;
 
     $('#content'+fk_kids).html(goal.content+'<br> ');
-    $('#now'+fk_kids).html(dayMoney.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")+'원<br>('+startDate.yyyymmdd()+' 부터)');
-    $('#goal'+fk_kids).html(goal.goal_cost.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")+'원<br>('+goalDate.yyyymmdd()+' 까지)');
+    $('#now'+fk_kids).html(dayMoney.toUnit(true)+'<br>('+startDate.yyyymmdd()+' 부터)');
+    $('#goal'+fk_kids).html(goal.goal_cost.toUnit(true)+'<br>('+goalDate.yyyymmdd()+' 까지)');
 
     if(chart[fk_kids])
         chart[fk_kids].destroy();
@@ -190,7 +192,7 @@ $(document).ready( function() {
                         var fk_kids = value.fk_kids;
                         $('#insert_section').append(html
                             .replace(/_fk_kids/g, fk_kids)
-                            .replace(/_name/g, name));
+                            .replace(/_name/g, this.name));
 
                         tables[fk_kids] = {};
                         sumCurrent(fk_kids);
@@ -218,8 +220,8 @@ function sumCurrent(fk_kids) {
         headers: {"Authorization": jwt},
         success: function (result) {
 
-            if(result.length)
-                current_goals[fk_kids] = result[0];
+            if(result)
+                current_goals[fk_kids] = result;
 
             fitToContainer(fk_kids);
         },
@@ -261,12 +263,12 @@ function makeTable(fk_kids, table)
         {
             "title": "목표 금액",
             "render": function (data, type, row) {
-                return data.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + '원';
+                return data.toUnit(true);
             },
         },
         {"title" : "현재 저축금액",
             "render": function ( data, type, row ) {
-                return data.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + '원';
+                return data.toUnit(true);
             }
         },
         {"title" : "상태"}

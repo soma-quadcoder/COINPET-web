@@ -122,7 +122,7 @@ a.kidsimgc{
 }
 
 .kidsimgo {
-    background-image: url('../image/kids/default.png');
+    background-image: url('../images/kids/default.png');
     background-size: cover;
 }
 
@@ -177,11 +177,35 @@ a.kidsimgc{
     display: table-cell;
     width: 120px;
     padding-right: 20px;
+    text-align: left;
 }
 
 #quest_content div input {
     display: table-cell;
-    width: 150px;
+    width: 160px;
+}
+
+#quest_content div select {
+    display: table-cell;
+    width: 160px;
+}
+
+#quest_content div span {
+    display: table-cell;
+    width: 160px;
+}
+
+#quest_comment {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+#quest_comment div {
+    text-align: center;
+}
+
+#quest_comment input {
+    width:100%;
 }
 
 .quest_button {
@@ -195,4 +219,13 @@ a.kidsimgc{
     width: 10px;
     font-size: 14px;
     display: table-cell;
+}
+
+.dataTable img {
+    width: 2em;
+    padding-right:10px
+}
+
+a.panel_close {
+    color:#fff;
 }

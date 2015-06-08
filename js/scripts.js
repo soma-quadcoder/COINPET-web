@@ -21,6 +21,14 @@ Date.prototype.hhmmss = function()
 		(ss[1] ? ss : '0'+ss[0]);
 };
 
+Number.prototype.toUnit = function(won)
+{
+	if(won)
+		return this.valueOf().toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")+'원';
+
+	return this.valueOf().toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+}
+
 // return name if param is fk_kids
 // return fk_kids if param is name
 function findChild(search) {

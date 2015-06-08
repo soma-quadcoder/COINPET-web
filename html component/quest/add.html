@@ -1,12 +1,13 @@
 <div class='addQuest popup'>
-        <div class="col-xs-1 col-sm-2 col-md-3 col-lg-4"></div>
-        <div class="col-xs-10 col-sm-8 col-md-6 col-lg-4">
+        <div class="col-xs-1 col-sm-2 col-md-3 col-lg-3"></div>
+        <div class="col-xs-10 col-sm-8 col-md-6 col-lg-6">
             <div class="panel_add panel panel-primary">
                 <div class="panel-heading text-center">
-                    <h2 style="color:inherit"> 퀘스트 만들기 </h2>
+                    <a href="#;" class="panel_close pull-right">닫기</a>
+                    <div><h2 style="color:inherit"> 퀘스트 만들기 </h2></div>
                 </div>
                 <div class="panel-body">
-                    <div id="add_select" style="position:relative">
+                    <div id="add_select" class="quest_rec_dis" style="position:relative">
                         <h3 style="margin-bottom: 20px;">누구에게 퀘스트를 보내시겠습니까?</h3>
 
                         <div class="row">
@@ -24,29 +25,42 @@
                         </div>
                     </div>
 
-                    <div id="add_content" style="display:none; position:relative">
+                    <div id="add_content" class="quest_rec_en" style="display:none; position:relative">
                         <h3 style="margin-bottom: 20px;">퀘스트 내용을 채워주세요.</h3>
 
+                        <form onsubmit="submitQuest();return false" action ='#;'>
                         <div class="row">
                             <div class="quest_body" id="quest_content">
                                 <div>
+                                    <h4>퀘스트 유형</h4>
+                                    <select id="type">
+                                        <option value="">-선택하세요-</option>
+                                        <option value="study">공부</option>
+                                        <option value="exercise">운동</option>
+                                        <option value="etc">기타</option>
+                                    </select>
+                                </div>
+                                <div>
                                     <h4>퀘스트 내용</h4>
-                                    <input id="content" type="text" />
+                                    <input id="content" class="form-control" type="text" required/>
                                 </div>
                                 <div>
                                     <h4>시작 날짜</h4>
-                                    <input id="startDate" type="date" />
+                                    <input id="startTime" class="form-control" type="date" min="_min" required/>
                                 </div>
                                 <div>
-                                    <h4>모아 에너지</h4>
-                                    <input id="point" type="number" />
+                                    <h4>보상</h4>
+                                    <span>모아 에너지 100</span>
                                 </div>
                             </div>
                         </div>
                         <div class="quest_button">
-                            <button class="btn btn-primary btn-block" onclick="$('#add_content').fadeOut(400, function(){$('#add_select').fadeIn()})">이전</button>
-                            <button class="btn btn-primary btn-block btn-filled" onclick="submitQuest();">만들기</button>
+                            <!--<button class="btn btn-primary btn-block quest_rec_en" type="button" onclick="$('.popup').hide();">취소</button>-->
+                            <button class="btn btn-primary btn-block quest_rec_dis" type="button" onclick="$('#add_content').fadeOut(400, function(){$('#add_select').fadeIn()})">이전</button>
+                            <button class="btn btn-primary btn-block btn-filled" type="submit" >만들기</button>
                         </div>
+                        </form>
+
                         <div class="text-right">
                             <p></p>
                             <small>돌아갈려면 창 밖을 클릭하세요.</small>
@@ -55,5 +69,5 @@
                 </div>
             </div>
         </div>
-        <div class="col-xs-1 col-sm-2 col-md-3 col-lg-4"></div>
+        <div class="col-xs-1 col-sm-2 col-md-3 col-lg-3"></div>
 </div>
