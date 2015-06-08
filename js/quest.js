@@ -329,10 +329,10 @@ function calculateQuest(fk_kids, quest_data, html)
         {
             if(quest_data[i].type == quest_rec[fk_kids].type)
             {
-                if(quest_data[i].pk_parents_quest)
-                    quest_rec[fk_kids].pk_parents_quest = quest_data[i].pk_parents_quest;
-                else if(quest_data[i].fk_std_que)
-                    quest_rec[fk_kids].fk_std_que = quest_data[i].fk_std_que;
+                //if(quest_data[i].pk_parents_quest)
+                //    quest_rec[fk_kids].pk_parents_quest = quest_data[i].pk_parents_quest;
+                //else if(quest_data[i].fk_std_que)
+                //    quest_rec[fk_kids].fk_std_que = quest_data[i].fk_std_que;
 
                 $('#type').val(quest_rec[fk_kids].type);
                 $('#content').val(quest_data[i].content);
@@ -433,6 +433,21 @@ function makeTable(fk_kids, tables, quest_data) {
 
     tables[fk_kids] = $('#table' + fk_kids).DataTable({
         "initComplete": function () {
+            $('#table'+fk_kids).after("<button id='quest_add"+fk_kids+"' class='btn btn-primary btn-block btn-filled quest_add'>퀘스트 만들기</button>");
+            $('#quest_add'+fk_kids).click(function(e) {
+                e.stopPropagation();
+                quest_selected = fk_kids;
+                $('#type').val('');
+                $('#content').val('');
+                $('#startTime').val('');
+
+                $('.quest_rec_dis').hide();
+                $('.quest_rec_en').show();
+                $('.addQuest').show();
+                $('.popup').css("height", $(window).height());
+                $('.panel_add').css("margin-top", ( $(window).height() - $('.panel_add').height() ) / 2);
+            });
+
             var api = this.api();
             api.$('td button').click(function (e) {
                 e.stopPropagation();

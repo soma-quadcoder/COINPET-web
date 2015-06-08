@@ -229,3 +229,11 @@ a.kidsimgc{
 a.panel_close {
     color:#fff;
 }
+
+.quest_add {
+    margin: 0 auto;
+    margin-top: 10px;
+    display:block;
+    width: 200px;
+    font-size: 14px;
+}
