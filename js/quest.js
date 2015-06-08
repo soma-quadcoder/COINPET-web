@@ -85,7 +85,7 @@ $(document).ready( function() {
         {
             $.ajax({
                 type: 'PUT',
-                url: domain+'/api/quest/parentsUpdate',
+                url: domain+'/api/quest/stateUpdate',
                 data: {
                     fk_parents_quest: pk_quest,
                     comment: $('#comment').val(),
@@ -116,7 +116,7 @@ $(document).ready( function() {
         {
             $.ajax({
                 type: 'PUT',
-                url: domain+'/api/quest/parentsUpdate',
+                url: domain+'/api/quest/stateUpdate',
                 data: {
                     fk_parents_quest: pk_quest,
                     comment: $('#comment').val(),
@@ -248,21 +248,18 @@ function calculateQuest(fk_kids, quest_data, html)
 
         if(!quest_type_finish_percent) quest_type_finish_percent = 0;
 
-        quest_type_array.push([key, key, quest_type_finish_percent, value.count]);
+        quest_type_array.push([key, quest_type_finish_percent, value.count]);
     });
 
-    quest_type_array.sort(function(a,b){return b[2]-a[2]});
-    quest_type_array.forEach(function(value, index, arr)
+    quest_type_array.sort(function(a,b){return b[1]-a[1]});
+    for(var index in quest_type_array)
     {
-        if(value[1] == "etc") {
-            arr.push(["기타", "etc", value[2]]);
-            arr.splice(index, 1);
-            value = arr[index];
+        if(quest_type_array[index][0] == "etc") {
+            quest_type_array.push(["etc", quest_type_array[0][1]]);
+            quest_type_array.splice(index, 1);
+            break;
         }
-
-        if (value[1] == "study") value[0] = "공부";
-        else if (value[1] == "exercise") value[0] = "운동";
-    });
+    }
 
     var quest_finish_percent = quest_finish / (index_data*1+1) * 100;
     $('#insert_section').append(html
@@ -272,17 +269,17 @@ function calculateQuest(fk_kids, quest_data, html)
 
     var type_bar = '<li><span>_type _percent%</span><div class="skill-bar-holder"><div class="skill-capacity" style="width:_percent%"></div></div></li>';
     $.each(quest_type_array, function(index, value) {
-		var label;
-		if(value[1] == "study")
-    		label = '<span class="label label-primary">'+value[0]+'</span>';
-    	else if(value[1] == "exercise")
-    		label = '<span class="label label-success">'+value[0]+'</span>';
-    	else
-    		label = '<span class="label label-default">'+value[0]+'</span>';
+        var label;
+        if (value[0] == "study")
+            label = '<span class="label label-primary">공부</span>';
+        else if (value[0] == "exercise")
+            label = '<span class="label label-success">운동</span>';
+        else
+            label = '<span class="label label-default">기타</span>';
 
-        $('#insert_quest_type'+fk_kids).append(type_bar
+        $('#insert_quest_type' + fk_kids).append(type_bar
             .replace('_type', label)
-            .replace(/_percent/g, Math.round(value[2]*100)/100));
+            .replace(/_percent/g, Math.round(value[1] * 100) / 100));
     });
 
     quest_rec[fk_kids] = {};
@@ -293,8 +290,8 @@ function calculateQuest(fk_kids, quest_data, html)
             +'상대적으로 수행 횟수가 낮은 퀘스트를 추천드립니다.';
 
         quest_type_array.splice(-1, 1);
-        quest_type_array.sort(function(a,b){return a[3]-b[3]});
-        quest_rec[fk_kids].type = quest_type_array[0][1];
+        quest_type_array.sort(function(a,b){return a[2]-b[2]});
+        quest_rec[fk_kids].type = quest_type_array[0][0];
 
     }
     else if(quest_finish_percent > 70) {
@@ -303,28 +300,30 @@ function calculateQuest(fk_kids, quest_data, html)
             + '어떤 임무든 척척 해낼 수 있는 아이가 되도록 도와주세요.';
 
         quest_type_array.splice(-1, 1);
-        quest_type_array.sort(function(a,b){return a[2]-b[2]});
-        quest_rec[fk_kids].type = quest_type_array[0][1];
+        quest_type_array.sort(function(a,b){return a[1]-b[1]});
+        quest_rec[fk_kids].type = quest_type_array[0][0];
     }
     else if(quest_finish_percent > 50) {
         var text = '무난하군요. _name 아이의 퀘스트 성공률은 평균적입니다.<br>'
             + '우리 _name 아이가 잘 할 수 있는 퀘스트는 어떤 퀘스트일까요?<br>'
             + '성공률이 높었던 유형의 퀘스트를 추천드립니다.';
-        quest_rec[fk_kids].type = quest_type_array[0][1];
+        quest_rec[fk_kids].type = quest_type_array[0][0];
     }
     else {
         var text = '_name 아이의 퀘스트 성공률이 다소 낮은 편입니다.<br>'
             + '우리 _name 아이가 잘 할 수 있는 퀘스트는 어떤 퀘스트일까요?<br>'
             + '성공률이 높었던 유형의 퀘스트를 추천드립니다.';
-        quest_rec[fk_kids].type  = quest_type_array[0][1];
+        quest_rec[fk_kids].type  = quest_type_array[0][0];
     }
 
+    // make quest_rec data
     for(var i in quest_data) {
-        if (quest_data[i].type == quest_rec[fk_kids].type) {
+        if (quest_data[i].type == quest_rec[fk_kids].type && state[quest_data[i].state] == 'finish') {
             if (quest_data[i].pk_parents_quest)
                 quest_rec[fk_kids].pk_parents_quest = quest_data[i].pk_parents_quest;
             else if (quest_data[i].fk_std_que)
                 quest_rec[fk_kids].fk_std_que = quest_data[i].fk_std_que;
+            break;
         }
     }
     $('#insert_quest_command'+fk_kids).html(text.replace(/_name/g, findChild(fk_kids)));
@@ -335,7 +334,9 @@ function calculateQuest(fk_kids, quest_data, html)
 
         for(var i in quest_data)
         {
-            if(quest_data[i].type == quest_rec[fk_kids].type)
+
+            // set dataset of input tag as quest_rec
+            if(quest_data[i].type == quest_rec[fk_kids].type && state[quest_data[i].state] == 'finish')
             {
                 //if(quest_data[i].pk_parents_quest)
                 //    quest_rec[fk_kids].pk_parents_quest = quest_data[i].pk_parents_quest;

@@ -20,10 +20,9 @@ $(document).ready(function() {
         params = {'email': email, 'passwd': passwd};
 
         $.ajax({        // Login
+            type: 'POST',
             url: domain + '/api/user/parents/login',
             data: params,
-            type: 'POST',
-            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
             success: success_login,
             error: function() { alert('로그인에 실패했습니다.\n 이메일 주소와 비밀번호를 확인하세요.'); }
         });
@@ -43,24 +42,21 @@ $(document).ready(function() {
 
     function getChild() {
         $.ajax({       // Get children info.
-            url: domain + '/api/user/parents/child',
             type: 'GET',
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader("Authorization", jwt);
-            },
-            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            url: domain + '/api/user/parents/child',
+            headers:{"Authorization": jwt},
             success: function (result) {
 
                 child = result;
-                $.cookie('child', JSON.stringify(child));
 
                 if (child.length) {
                     // 등록된 자녀가 있음.
+                    $.cookie('child', JSON.stringify(child));
                     $(location).attr('href','./dashboard.html');
                 }
                 else {
                     // 등록된 자녀가 없음.
-                    alert('등록된 자녀가 없습니다.');
+                    $(location).attr('href','./nochild.html');
                 }
             }
         });

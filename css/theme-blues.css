@@ -332,13 +332,30 @@ section:nth-of-type(even) {
   border: 2px solid #1a8bb3;
   font-family: "Raleway", "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: bold;
-  font-size: 11px;
+  font-size: 14px;
   text-transform: uppercase;
   letter-spacing: 1px;
   color: #1a8bb3;
 }
 .btn-primary.btn-filled {
   background: #1a8bb3;
+  color: #fff;
+}
+.btn-danger {
+  border-radius: 25px;
+  display: inline-block;
+  padding: 14px 28px 13px 28px;
+  line-height: 1;
+  border: 2px solid #ac2925;
+  font-family: "Raleway", "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: bold;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #1a8bb3;
+}
+.btn-danger.btn-filled {
+  background: #c9302c;
   color: #fff;
 }
 .btn-white {
@@ -2295,7 +2312,7 @@ input[type="submit"] {
   max-width: 155px;
   font-family: "Raleway", "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: bold;
-  font-size: 11px;
+  font-size: 14px;
   text-transform: uppercase;
   letter-spacing: 1px;
 }
