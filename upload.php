@@ -78,69 +78,43 @@ if($init_directory[Authorization] == true)
 
 if ($_FILES)
 {
-	switch($_FILES['filename']['type'])
-	{
-		case 'image/jpg':
-		case 'image/jpeg': $ext='jpg'; break;
-		case 'image/gif': $ext='gif';  break;
-		case 'image/png': $ext='png';  break;
-		default:
-				print_error('{"Error":"Invalid_file"}');
-	}
-	if( $name )
-		$name = $name.".".$ext;
-	else
-		$name = $directory."/".$_FILES['filename']['name'];
+   switch($_FILES['filename']['type'])
+   {
+      case 'image/jpg':
+      case 'image/jpeg': $ext='jpg'; break;
+      case 'image/gif': $ext='gif';  break;
+      case 'image/png': $ext='png';  break;
+      default:
+            print_error('{"Error":"Invalid_file"}');
+   }
+   $name = $name.".".$ext;
 
-	$image = new Eventviva\ImageResize($_FILES['filename']['tmp_name']);
+   if($_POST[width] || $_POST[height])
+   {
+      use \Eventviva\ImageResize;
 
-	$width = $image->getDestWidth();
-	$height = $image->getDestHeight();
+      $image = new ImageResize($_FILES['filename']['tmp_name']);
 
-	if($_POST[width])
-		$width = $_POST[width];
+      if($_POST[width])
+         $image->resizeToWidth($_POST[width]);
+      if($_POST[height])
+         $image->resizeToHeight($_POST[height]);
 
-	if($_POST[height])
-		$height = $_POST[height];
+      $image->save($_FILES['filename']['tmp_name']);
+   }
 
-	if($init_directory[width])
-		$witdh = $init_directory[width];
+   $success = move_uploaded_file ($_FILES['filename']['tmp_name'], $name);
 
-	if($init_directory[height])
-		$height = $init_directory[height];
-
-	$image->resize($width, $height);
-
-	$crop = json_decode($_POST[crop], true);
-	
-	if ($_POST[crop])
-	{
-		if ( ! ($crop[width] && $crop[height]) )
-		{
-			print_error ("Invalid_crop_value");
-		}
-		$crop = json_decode($_POST[crop], true);
-		$width = $crop[width];
-		$heidht = $crop[height];
-	}
-		
-	if($init_directory[width])
-		$width = $init_directory[crop][width];
-	if($init_directory[height])
-		$height = $init_directory[crop][height];
-
-	$image->crop($width, $height);	
-	$success = unlink($_FILES['filename']['tmp_name']);
-	$image->save($name);
-	$success |= $image->getSuccess();
-
-	if($success == 0)
-		print_error ("Fail_write");
-
-	print ('{"filename":"'.$name.'"}');
+   if($success == 0)
+   {
+      http_response_code(500);
+      print ('{"Error":"Fail_write"}');
+      return;
+   }
+   print ('{"filename":"'.$name.'"}');
 }
 else
 {
-	print_error ("No_file");
+   print ('{"Error":"No_file"}');
 }
 ?>

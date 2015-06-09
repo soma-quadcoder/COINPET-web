@@ -124,7 +124,7 @@ $(document).ready(function() {
                 $('.panel_add').css("margin-top", ( $(window).height() - $('.panel_add').height() ) / 2);
             });
 
-            var temp = '<div class="col-xs-6 col-sm-6"><div class="kidsimg"><img class="kidsimg kidsimgo" src="./image/kids/_fk_kids.png">_name</div></div>';
+            var temp = '<div class="col-xs-6 col-sm-6"><div class="kidsimg"><img class="kidsimg kidsimgo" src="./images/kids/_fk_kids.jpg">_name</div></div>';
 
             for(var i in child)
                 $('#quest_kidsSelect').append(temp

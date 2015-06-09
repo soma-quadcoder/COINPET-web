@@ -1,6 +1,9 @@
 /**
  * Created by jeon on 2015. 6. 9..
  */
+var selected_fk_kids;
+var doing;
+
 $(document).ready(function() {
     "use strict";
 
@@ -25,6 +28,44 @@ $(document).ready(function() {
             alert("child_image.html 불러오기 실패\n" + err);
         }
     });
+
+    $("#inputFile").change(function(e) {
+        $('#submitForm').submit();
+    });
+
+    $("#submitForm").submit(function(e) {
+        doing = 1;
+
+        var formData = new FormData();
+        formData.append('filename', $('#inputFile')[0].files[0]);
+        formData.append('fk_kids', selected_fk_kids);
+        formData.append('directory', 'images/kids');
+
+        console.log(formData);
+
+        $.ajax({
+            type: 'POST',
+            url: './upload.php',
+            headers: {"Authorization": jwt},
+            contentType: false,
+            processData: false,
+            data: formData,
+            success: function (result) {
+                alert('사진 업로드 성공');
+                $(location).attr('href', './child.html');
+            },
+            error: function (result, status, err) {
+                alert('사진 업로드에 실패하였습니다.');
+                console.log('error '+result.responseText);
+            },
+            complete: function () {
+                doing = 0;
+            }
+        });
+
+        return false;
+    });
+
 });
 
 function insertImage(fk_kids, html)
@@ -34,36 +75,8 @@ function insertImage(fk_kids, html)
         .replace(/_fk_kids/g, fk_kids));
 
     $('#upload'+fk_kids).click(function() {
-        $( ":file").click();
-        $(":file").change(function(e) {
-
-            doing = 1;
-
-            var data = new FormData();
-            $.each($('#inputFile')[0].files, function(i, file) {
-                data.append('file-' + i, file);
-            });
-            data.append('fk_kids', fk_kids);
-
-            $.ajax({
-                type: 'POST',
-                url: './upload.php',
-                headers: {"Authorization": jwt},
-                contentType: 'multipart/form-data',
-                processData: false,
-                data: data,
-                success: function (result) {
-                    alert('사진 업로드 성공');
-                    $(location).attr('href', './child.html');
-                },
-                error: function (result, status, err) {
-                    alert('사진 업로드에 실패하였습니다.');
-                },
-                complete: function () {
-                    doing = 0;
-                }
-            });
-        });
+        $( "#inputFile").click();
+        selected_fk_kids = fk_kids;
     });
 
     $('#delete'+fk_kids).click(function() {
