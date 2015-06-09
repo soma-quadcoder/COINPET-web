@@ -241,7 +241,7 @@ $(document).ready( function() {
         success: function (result) {
 
             if (result.length == 0) {
-                alert('저축 데이터가 없습니다.');
+                alert('저금 데이터가 없습니다.');
                 return;
             }
 
@@ -251,7 +251,7 @@ $(document).ready( function() {
             $(window).resize(fitToContainer);
         },
         error: function (result, statu, err) {
-            alert('자녀의 저축 정보를 받아오는데 실패하였습니다.\n'+err);
+            alert('자녀의 저금 정보를 받아오는데 실패하였습니다.\n'+err);
         }
     });
 

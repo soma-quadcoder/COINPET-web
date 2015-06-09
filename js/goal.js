@@ -74,7 +74,7 @@ function goal_drawChart(fk_kids) {
             data: [1000]
         }, {
             type: "bar",
-            label: "현재 저축 금액",
+            label: "현재 저금 금액",
             fillColor: "rgba(220,220,220,0.5)",
             strokeColor: "rgba(220,220,220,0.8)",
             pointHighlightFill: "rgba(220,220,220,0.75)",
@@ -180,7 +180,7 @@ $(document).ready( function() {
                 success: function (result) {
 
                     if (result.length == 0) {
-                        alert('저축 데이터가 없습니다.');
+                        alert('저금 데이터가 없습니다.');
                         return;
                     }
 
@@ -202,7 +202,7 @@ $(document).ready( function() {
                     $(window).resize(fitToContainer);
                 },
                 error: function (result, statu, err) {
-                    alert(findChild(fk_kids)+'의 저축 정보를 받아오는데 실패하였습니다.\n'+err);
+                    alert(findChild(fk_kids)+'의 저금 정보를 받아오는데 실패하였습니다.\n'+err);
                 }
             });
         },
@@ -226,7 +226,7 @@ function sumCurrent(fk_kids) {
             fitToContainer(fk_kids);
         },
         error: function (result, statu, err) {
-            alert(findChild(fk_kids) + '의 현재 저축 정보를 받아오는데 실패하였습니다.\n' + err);
+            alert(findChild(fk_kids) + '의 현재 저금 정보를 받아오는데 실패하였습니다.\n' + err);
         }
     });
 }
@@ -266,7 +266,7 @@ function makeTable(fk_kids, table)
                 return data.toUnit(true);
             },
         },
-        {"title" : "현재 저축금액",
+        {"title" : "현재 저금액",
             "render": function ( data, type, row ) {
                 return data.toUnit(true);
             }

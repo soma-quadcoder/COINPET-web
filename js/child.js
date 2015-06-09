@@ -82,7 +82,34 @@ function insertImage(fk_kids, html)
     $('#delete'+fk_kids).click(function() {
         if(confirm(findChild(fk_kids)+'아이의 저금통 등록을 해제하시겠습니까?\n아이의 저금통은 언제든지 다시 등록할 수 있습니다.')) {
             // Do someting
-            alert('등록 해제되었습니다.');
+            $.ajax({
+                type: 'POST',
+                url: domain+'/api/user/parents/child',
+                headers: {"Authorization": jwt},
+                data: {
+                    _method: 'DELETE',
+                    fk_kids: fk_kids
+                },
+                success: function( resut ) {
+                    for(var i in child)
+                    {
+                        if(child[i].fk_kids == fk_kids) {
+                            child.splice(i, 1);
+                            break;
+                        }
+                    }
+                    $.cookie('child', JSON.stringify(child));
+
+                    alert('등록 해제되었습니다.');
+                    if(child.length)
+                        $(location).attr('href', './child.html');
+                    else
+                        $(location).attr('href', './nochild.html');
+                },
+                error: function( result, status, err) {
+                    alert('에러가 발생하였습니다.\n' + err);
+                }
+            });
         }
     });
 }
@@ -101,10 +128,11 @@ function addKids() {
         headers: {"Authorization": jwt},
         data: {'pn': pn},
         success: function (addedChild) {
-            alert('등록되었습니다.');
-            $.cookie('child', '['+JSON.stringify(addedChild)+']');
+            child.push(addedChild);
+            $.cookie('child', JSON.stringify(child));
             $('.inputPN').val('');
 
+            alert('등록되었습니다.');
             $(location).attr('href', './dashboard.html');
         },
         error: function () {

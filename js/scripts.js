@@ -58,6 +58,7 @@ $(document).ready(function(){
 
 	jwt = $.cookie('jwt');
 	child = $.cookie('child');
+	child = JSON.parse(child);
 
 	if(jwt) {
 
@@ -72,15 +73,13 @@ $(document).ready(function(){
 		var pagename      = document.location.pathname.match(/[^\/]+$/)[0];
 		if(pagename == "nochild.html")
 		{
-			if(child)
+			if(child.length)
 			{
 				alert('잘못된 접근입니다.');
 				$(location).attr('href', './child.html');
 			}
 		}
-		else if(child)
-			child = JSON.parse(child);
-		else
+		else if(child.length == 0)
 			$(location).attr('href', './nochild.html');
 
 		$('#btn-login').text('저금통 관리');

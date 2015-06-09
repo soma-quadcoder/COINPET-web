@@ -48,16 +48,14 @@ $(document).ready(function() {
             success: function (result) {
 
                 child = result;
+                $.cookie('child', JSON.stringify(child));
 
-                if (child.length) {
+                if (child.length)
                     // 등록된 자녀가 있음.
-                    $.cookie('child', JSON.stringify(child));
                     $(location).attr('href','./dashboard.html');
-                }
-                else {
+                else
                     // 등록된 자녀가 없음.
                     $(location).attr('href','./nochild.html');
-                }
             }
         });
     }

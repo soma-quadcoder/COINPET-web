@@ -77,7 +77,7 @@ function goal_drawChart(fk_kids) {
             data: [1000]
         }, {
             type: "bar",
-            label: "현재 저축 금액",
+            label: "현재 저금 금액",
             fillColor: "rgba(220,220,220,0.5)",
             strokeColor: "rgba(220,220,220,0.8)",
             pointHighlightFill: "rgba(220,220,220,0.75)",
@@ -304,7 +304,7 @@ $(document).ready(function() {
                 success: function (result) {
 
                     if (result.length == 0) {
-                        alert('저축 데이터가 없습니다.');
+                        alert('저금 데이터가 없습니다.');
                         return;
                     }
 
@@ -323,7 +323,7 @@ $(document).ready(function() {
                     $(window).resize(fitToContainer);
                 },
                 error: function (result, statu, err) {
-                    alert(findChild(fk_kids)+'의 저축 정보를 받아오는데 실패하였습니다.\n'+err);
+                    alert(findChild(fk_kids)+'의 저금 정보를 받아오는데 실패하였습니다.\n'+err);
                 }
             });
         },
@@ -348,7 +348,7 @@ function sumCurrent(fk_kids) {
             fitToContainer(fk_kids);
         },
         error: function (result, statu, err) {
-            alert(findChild(fk_kids) + '의 현재 저축 정보를 받아오는데 실패하였습니다.\n' + err);
+            alert(findChild(fk_kids) + '의 현재 저금 정보를 받아오는데 실패하였습니다.\n' + err);
         }
     });
 }
@@ -406,7 +406,7 @@ function calculateQuest(fk_kids, quest_data, html)
     for(var index in quest_type_array)
     {
         if(quest_type_array[index][0] == "etc") {
-            quest_type_array.push(["etc", quest_type_array[0][1]]);
+            quest_type_array.push(["etc", quest_type_array[index][1], quest_type_array[index][2]]);
             quest_type_array.splice(index, 1);
             break;
         }
@@ -426,7 +426,7 @@ function calculateQuest(fk_kids, quest_data, html)
         else if (value[0] == "exercise")
             label = '<span class="label label-success">운동</span>';
         else if (value[0] == "saving")
-            label = '<span class="label label-info">저축</span>';
+            label = '<span class="label label-info">저금</span>';
         else if (value[0] == "help")
             label = '<span class="label label-warning">도움</span>';
         else
@@ -539,7 +539,7 @@ function calculateWeek(fk_kids, html){
                 .replace('_state', '아주 좋음'));
         },
         error: function () {
-            alert('자녀의 저축 정보를 받아오는데 실패하였습니다.');
+            alert('자녀의 저금 정보를 받아오는데 실패하였습니다.');
         }
     });
 }

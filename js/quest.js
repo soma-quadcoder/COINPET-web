@@ -261,7 +261,7 @@ function calculateQuest(fk_kids, quest_data, html)
     for(var index in quest_type_array)
     {
         if(quest_type_array[index][0] == "etc") {
-            quest_type_array.push(["etc", quest_type_array[0][1]]);
+            quest_type_array.push(["etc", quest_type_array[index][1], quest_type_array[index][2]]);
             quest_type_array.splice(index, 1);
             break;
         }
@@ -281,7 +281,7 @@ function calculateQuest(fk_kids, quest_data, html)
         else if (value[0] == "exercise")
             label = '<span class="label label-success">운동</span>';
         else if (value[0] == "saving")
-            label = '<span class="label label-info">저축</span>';
+            label = '<span class="label label-info">저금</span>';
         else if (value[0] == "help")
             label = '<span class="label label-warning">도움</span>';
         else
