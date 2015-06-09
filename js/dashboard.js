@@ -148,17 +148,17 @@ function calculateQuest(fk_kids, quest_data, html)
     var quest_finish = 0;
     var quest_type_json = {};
     var quest_type_array = [];
-    quest_type_json.study = {};
-    quest_type_json.exercise = {};
-    quest_type_json.etc = {};
-
-    quest_type_json.study.count = 0;
-    quest_type_json.exercise.count = 0;
-    quest_type_json.etc.count = 0;
-
-    quest_type_json.study.finish = 0;
-    quest_type_json.exercise.finish = 0;
-    quest_type_json.etc.finish = 0;
+    //quest_type_json.study = {};
+    //quest_type_json.exercise = {};
+    //quest_type_json.etc = {};
+    //
+    //quest_type_json.study.count = 0;
+    //quest_type_json.exercise.count = 0;
+    //quest_type_json.etc.count = 0;
+    //
+    //quest_type_json.study.finish = 0;
+    //quest_type_json.exercise.finish = 0;
+    //quest_type_json.etc.finish = 0;
 
     for(var index_data in quest_data)
     {
@@ -168,6 +168,12 @@ function calculateQuest(fk_kids, quest_data, html)
             quest_type = "etc";
 
         quest_finish += (state[quest_data[index_data].state] == "finish");
+        if( !quest_type_json[quest_type] )
+        {
+            quest_type_json[quest_type] = {};
+            quest_type_json[quest_type].count = 0;
+            quest_type_json[quest_type].finish = 0;
+        }
         quest_type_json[quest_type].finish += (state[quest_data[index_data].state] == "finish");
         quest_type_json[quest_type].count++;
     }
@@ -204,6 +210,10 @@ function calculateQuest(fk_kids, quest_data, html)
             label = '<span class="label label-primary">공부</span>';
         else if (value[0] == "exercise")
             label = '<span class="label label-success">운동</span>';
+        else if (value[0] == "saving")
+            label = '<span class="label label-info">저축</span>';
+        else if (value[0] == "help")
+            label = '<span class="label label-warning">도움</span>';
         else
             label = '<span class="label label-default">기타</span>';
 

@@ -83,15 +83,31 @@ $(document).ready(function(){
 		else
 			$(location).attr('href', './nochild.html');
 
-		$('#btn-login').text('로그아웃');
+		$('#btn-login').text('저금통 관리');
 		$('#btn-login').click(function() {
+			$(location).attr('href', './child.html');
+			return false;
+		});
+
+		$('#btn-login').next().text('로그아웃');
+		$('#btn-login').next().click(function () {
 			$.removeCookie('jwt');
 			$.removeCookie('child');
 			$(location).attr('href','./index.html');
 			return false;
 		});
 
-		$('#btn-login').next().hide();
+		//$('#btn-login').next().hide();
+        //
+		//$('#btn-login').text('로그아웃');
+		//$('#btn-login').click(function() {
+		//	$.removeCookie('jwt');
+		//	$.removeCookie('child');
+		//	$(location).attr('href','./index.html');
+		//	return false;
+		//});
+        //
+		//$('#btn-login').next().hide();
 	}
 
 	// Nav Sticky

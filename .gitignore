@@ -5,3 +5,7 @@
 */*/._.DS_Store
 
 ./js/domain.js
+
+composer.lock
+composer.phar
+composer.json
