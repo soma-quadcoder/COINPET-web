@@ -58,7 +58,10 @@ $(document).ready(function(){
 
 	jwt = $.cookie('jwt');
 	child = $.cookie('child');
-	child = JSON.parse(child);
+	if(child)
+		child = JSON.parse(child);
+	else
+		child = [];
 
 	if(jwt) {
 
@@ -96,17 +99,6 @@ $(document).ready(function(){
 			return false;
 		});
 
-		//$('#btn-login').next().hide();
-        //
-		//$('#btn-login').text('로그아웃');
-		//$('#btn-login').click(function() {
-		//	$.removeCookie('jwt');
-		//	$.removeCookie('child');
-		//	$(location).attr('href','./index.html');
-		//	return false;
-		//});
-        //
-		//$('#btn-login').next().hide();
 	}
 
 	// Nav Sticky
