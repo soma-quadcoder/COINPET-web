@@ -14,7 +14,7 @@ $(document).ready(function() {
     }
 
     $('form').on("submit", function() {
-        var name = $(".form-input").val();
+        var name = $(".form-name").val();
         var passwd = $(".form-password").val();
 
         params = {'name': name, 'passwd': passwd};
