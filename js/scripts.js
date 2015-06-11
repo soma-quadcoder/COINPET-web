@@ -73,29 +73,32 @@ $(document).ready(function(){
 		{
 		}
 
-		var pagename      = document.location.pathname.match(/[^\/]+$/)[0];
-		if(pagename == "nochild.html")
-		{
-			if(child.length)
-			{
-				alert('잘못된 접근입니다.');
-				$(location).attr('href', './child.html');
-			}
-		}
-		else if(child.length == 0)
-			$(location).attr('href', './nochild.html');
-
-		$('#btn-login').text('저금통 관리');
-		$('#btn-login').click(function() {
-			$(location).attr('href', './child.html');
-			return false;
-		});
-
 		$('#btn-login').next().text('로그아웃');
 		$('#btn-login').next().click(function () {
 			$.removeCookie('jwt');
 			$.removeCookie('child');
 			$(location).attr('href','./index.html');
+			return false;
+		});
+
+		if(document.location.pathname.split('/')[2] == 'admin') {
+			$('#btn-login').hide();
+			return;
+		}
+
+		var pagename = document.location.pathname.match(/[^\/]+$/)[0];
+		if (pagename == "nochild.html") {
+			if (child.length) {
+				alert('잘못된 접근입니다.');
+				$(location).attr('href', './child.html');
+			}
+		}
+		else if (child.length == 0)
+			$(location).attr('href', './nochild.html');
+
+		$('#btn-login').text('저금통 관리');
+		$('#btn-login').click(function() {
+			$(location).attr('href', './child.html');
 			return false;
 		});
 
