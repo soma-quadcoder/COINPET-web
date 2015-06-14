@@ -461,24 +461,19 @@ function makeTable(fk_kids, tables, quest_data) {
         "drawCallback": function () {
             var api = this.api();
 
-            if ( typeof onceCallback == 'undefined' ) {
-                // It has not... perform the initialization
-                onceCallback = 1;
+            api.$('td button').off();
+            api.$('td button').click(function (e) {
+                e.stopPropagation();
+                var index = $('#table' + fk_kids + ' tr').index($(this).parent().parent()) - 1;
+                pk_quest = tables[fk_kids].column(0).data()[index];
 
+                $('#quest_context').html(tables[fk_kids].column(2).data()[index]);
+                $('#quest_exam_kids').html(findChild(fk_kids) + '의 퀘스트 검사하기');
+                $('.exam').show();
 
-                api.$('td button').click(function (e) {
-                    e.stopPropagation();
-                    var index = $('#table' + fk_kids + ' tr').index($(this).parent().parent()) - 1;
-                    pk_quest = tables[fk_kids].column(0).data()[index];
-
-                    $('#quest_context').html(tables[fk_kids].column(2).data()[index]);
-                    $('#quest_exam_kids').html(findChild(fk_kids) + '의 퀘스트 검사하기');
-                    $('.exam').show();
-
-                    $('.popup').css("height", $(window).height());
-                    $('.panel_exam').css("margin-top", ( $(window).height() - $('.panel_exam').height() ) / 2);
-                });
-            }
+                $('.popup').css("height", $(window).height());
+                $('.panel_exam').css("margin-top", ( $(window).height() - $('.panel_exam').height() ) / 2);
+            });
         },
 
         paging: false,

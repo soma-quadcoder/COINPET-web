@@ -40,10 +40,11 @@ $(document).ready( function() {
                         var cur_date = new Date(result.createTime);
                         for(var i in result.product_num)
                         {
-                            result.product_num[i] = [i*1+1, result.product_num[i], cur_date];
+                            result.product_num[i] = [i*1+1, result.product_num[i], cur_date, 'N', 'N'];
                         }
-
-                        exportData(result.product_num);
+                        var time = new Date();
+                        time = time.yyyymmdd() +' '+ time.hhmmss();
+                        exportData(result.product_num, time);
                         //DownloadJSON2CSV(result.product_num);
                     },
                    error: function (result, status, err) {
@@ -74,12 +75,10 @@ $(document).ready( function() {
     });
 });
 
-function exportData(objArray)
+function exportData(objArray, time)
 {
     var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
     var str = '';
-    var time = new Date();
-    time = time.yyyymmdd() +' '+ time.hhmmss();
 
     for (var i = 0; i < array.length; i++) {
         var line = '';
@@ -96,7 +95,7 @@ function exportData(objArray)
     //this will remove the blank-spaces from the title and replace it with an underscore
 
     //Initialize file format you want csv or xls
-    var uri = 'data:text/csv;charset=utf-8,' + '순번, 제품 번호, 생성 시간' + escape('\r\n'+str);
+    var uri = 'data:text/csv;charset=utf-8,' + '순번, 제품 번호, 생성 시간, 등록 여부, 유저 등록 여부' + escape('\r\n'+str);
 
     // Now the little tricky part.
     // you can use either>> window.open(uri);
@@ -119,6 +118,7 @@ function exportData(objArray)
 
 function makeTable() {
     var columds = {};
+
     columds.log = [
         {
             "title": "생산 날짜(시간)",
@@ -133,7 +133,7 @@ function makeTable() {
             }
         },
         {
-            "title": "제작 개수 (비율)",
+            "title": "등록 개수 (비율)",
             "render": function (data, type, row) {
                 var percent = data / row[1] * 100;
                 percent = Math.round(percent*100)/100 + '%';
@@ -152,8 +152,8 @@ function makeTable() {
             "title": "기능",
             "render": function (data, type, row) {
                 data = '<a class="download" href="#;"><span class="nowrap"><img src="../images/dot.gif" title="다운로드" alt="다운로드"class="icon ic_b_save"> 다운로드</span></a>';
-                data += '<a class="write" href="#;"><span class="nowrap"><img src="../images/dot.gif" title="사용 처리" alt="사용 처리"class="icon ic_b_tblops"> 사용 처리</span></a>'
-                data += '<a class="drop" href="#;"><span class="nowrap"><img src="../images/dot.gif" title="미사용 삭제" alt="미사용 삭제"class="icon ic_b_drop"> 미사용 삭제</span></a>';
+                data += '<a class="write" href="#;"><span class="nowrap"><img src="../images/dot.gif" title="등록 처리" alt="등록 처리"class="icon ic_b_tblops"> 등록 처리</span></a>'
+                data += '<a class="drop" href="#;"><span class="nowrap"><img src="../images/dot.gif" title="미등록 삭제" alt="미등록 삭제"class="icon ic_b_drop"> 미등록 삭제</span></a>';
                 return data;
             }
         }
@@ -183,7 +183,7 @@ function makeTable() {
                 else if (data)
                     return '<span class="label label-primary">'+data+'번</span> <a href="#;"><span class="nowrap"><img src="../images/dot.gif" title="사용자 변경" alt="사용자 변경"class="icon ic_b_usrlist"> 사용자 변경</span></a>';
                 else
-                    return '<span class="label label-default">미사용</span> <a href="#;"><span class="nowrap"><img src="../images/dot.gif" title="사용자 지정" alt="사용자 지정"class="icon ic_b_usrcheck"> 사용자 지정</span></a>';
+                    return '<span class="label label-default">미등록</span> <a href="#;"><span class="nowrap"><img src="../images/dot.gif" title="사용자 지정" alt="사용자 지정"class="icon ic_b_usrcheck"> 사용자 지정</span></a>';
 
             }
         },
@@ -202,7 +202,7 @@ function makeTable() {
 
                 }
                 else
-                    return '<span class="label label-default">미사용</span> <a href="#;"><span class="nowrap"><img src="../images/dot.gif" title="사용 처리" alt="사용 처리"class="icon ic_b_tblops"> 사용 처리</span></a> <a href="#;"><span class="nowrap"><img src="../images/dot.gif" title="삭제" alt="삭제"class="icon ic_b_drop"> 삭제</span></a>';;
+                    return '<span class="label label-default">미등록</span> <a href="#;"><span class="nowrap"><img src="../images/dot.gif" title="등록 처리" alt="등록 처리"class="icon ic_b_tblops"> 등록 처리</span></a> <a href="#;"><span class="nowrap"><img src="../images/dot.gif" title="삭제" alt="삭제"class="icon ic_b_drop"> 삭제</span></a>';;
             }
         }
     ];
@@ -217,31 +217,47 @@ function makeTable() {
         },
         "drawCallback": function () {
             var api = this.api();
+            console.log('table_log draw callback');
 
-            if ( typeof onceCallback == 'undefined' ) {
-                // It has not... perform the initialization
-                onceCallback = 1;
-                api.$('td a.download').click(function(e) {
-                    e.stopPropagation();
-                    var index = $('#table_log tr').index($(this).parent().parent()) - 1;
-                    var selected_time = tables['log'].column( 0 ).data()[index];
-                    console.log('download '+selected_time);
-                });
+            api.$('td a').off();
 
-                api.$('td a.write').click(function(e) {
-                    e.stopPropagation();
-                    var index = $('#table_log tr').index($(this).parent().parent()) - 1;
-                    var selected_time = tables['log'].column( 0 ).data()[index];
-                    console.log('write '+selected_time);
-                });
+            api.$('td a').click(function(e) {
+                e.stopPropagation();
+                var index = $('#table_log tr').index($(this).parent().parent()) - 1;
+                var selected = tables['log'].column( 0 ).data()[index];
+                selected = new Date(selected);
+                var target = {};
+                target.date = selected.yyyymmdd();
 
-                api.$('td a.drop').click(function(e) {
-                    e.stopPropagation();
-                    var index = $('#table_log tr').index($(this).parent().parent()) - 1;
-                    var selected_time = tables['log'].column( 0 ).data()[index];
-                    console.log('drop '+selected_time);
-                });
-            }
+                if($('#table_log_length input:checked').val() == 'once')
+                   target.time = selected.hhmmss();
+
+                if($(this).className == 'download')
+                    makeData(target);
+                else if($(this).className == 'write')
+                {
+
+                }
+                else if($(this).className == 'drop')
+                {
+
+                }
+            });
+
+            api.$('td a.write').click(function(e) {
+                e.stopPropagation();
+                var index = $('#table_log tr').index($(this).parent().parent()) - 1;
+                var selected_time = tables['log'].column( 0 ).data()[index];
+                console.log('write '+selected_time);
+            });
+
+            api.$('td a.drop').click(function(e) {
+                e.stopPropagation();
+                var index = $('#table_log tr').index($(this).parent().parent()) - 1;
+                var selected_time = tables['log'].column( 0 ).data()[index];
+                console.log('drop '+selected_time);
+            });
+
         },
 
         autoWidth: false,
@@ -269,6 +285,32 @@ function makeTable() {
             "url": "../html component/datatable_kr.json"
         }
     });
+}
+
+function makeData(target) {
+
+    var result = [];
+    var count = 1;
+
+    for(var index_time in pns[target.date])
+    {
+        var temp = target.date;
+        if(target.time && target.time != index_time)
+            continue;
+
+        for(var i in pns[target.date][index_time])
+        {
+            var pn = pns[target.date][index_time][i];
+            result.push([count, pn.product_num, target.date +' '+index_time, (pn.admin_write)?'Y':'N', (pn.used)?'Y':'N']);
+            count++;
+        }
+    }
+
+    var time = target.date;
+    if(target.time)
+        time += ' ' + target.time;
+
+    exportData(result, time);
 }
 
 function pushData(method) {
