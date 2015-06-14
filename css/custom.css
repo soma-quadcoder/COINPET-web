@@ -230,6 +230,10 @@ a.panel_close {
     color:#fff;
 }
 
+.nowrap {
+    margin-right: 10px;
+}
+
 .quest_add {
     margin: 0 auto;
     margin-top: 10px;
@@ -237,3 +241,19 @@ a.panel_close {
     width: 200px;
     font-size: 14px;
 }
+
+.icon {
+    margin: 0em;
+    padding: 0 !important;
+    width: 16px !important;
+    height: 16px;
+    background-image: url('../images/sprites.png') !important;
+    background-repeat: no-repeat !important;
+    background-position: top left !important;
+}
+
+.ic_b_drop { background-position: 0 -432px !important; }
+.ic_b_save { background-position: 0 -1040px !important; }
+.ic_b_usrcheck { background-position: 0 -1392px !important; }
+.ic_b_usrlist { background-position: 0 -1440px !important; }
+.ic_b_tblops { background-position: 0 -1280px !important; }

@@ -5,6 +5,7 @@
 var tables = {};
 var pns;
 var rows = [];
+var popup = 1;
 
 $(document).ready( function() {
 
@@ -21,6 +22,12 @@ $(document).ready( function() {
         var count = $('.signup-email-field').val();
         if(count > 0) {
             if(confirm(count+'개의 제품 번호를 생산합니다.')) {
+                if(!popup)
+                {
+                    alert('팝업이 차단되어있습니다. 차단을 해제하세요.');
+                    return;
+                }
+
                 $.ajax({
                     type: 'POST',
                     url: domain + '/api/pnGenerator/',
@@ -30,8 +37,16 @@ $(document).ready( function() {
                     },
                     success: function (result) {
                         alert('제품 번호가 생산되었습니다. 펌웨어에 구워주세요.');
+                        var cur_date = new Date(result.createTime);
+                        for(var i in result.product_num)
+                        {
+                            result.product_num[i] = [i*1+1, result.product_num[i], cur_date];
+                        }
+
+                        exportData(result.product_num);
+                        //DownloadJSON2CSV(result.product_num);
                     },
-                    error: function (result, status, err) {
+                   error: function (result, status, err) {
                         alert('에러가 발생하였습니다.\n'+err);
                     }
                 });
@@ -41,7 +56,6 @@ $(document).ready( function() {
             alert('개수를 정확히 입력하세요.');
         return false;
     });
-
 
     makeTable();
 
@@ -58,8 +72,50 @@ $(document).ready( function() {
 
         }
     });
-
 });
+
+function exportData(objArray)
+{
+    var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+    var str = '';
+    var time = new Date();
+    time = time.yyyymmdd() +' '+ time.hhmmss();
+
+    for (var i = 0; i < array.length; i++) {
+        var line = '';
+        for (var index in array[i]) {
+            if(line != '') line += ',';
+
+            line += array[i][index];
+        }
+
+        str += line + '\r\n';
+    }
+
+    var fileName = "제품 번호_" + time;
+    //this will remove the blank-spaces from the title and replace it with an underscore
+
+    //Initialize file format you want csv or xls
+    var uri = 'data:text/csv;charset=utf-8,' + '순번, 제품 번호, 생성 시간' + escape('\r\n'+str);
+
+    // Now the little tricky part.
+    // you can use either>> window.open(uri);
+    // but this will not work in some browsers
+    // or you will not get the correct file extension
+
+    //this trick will generate a temp <a /> tag
+    var link = document.createElement("a");
+    link.href = uri;
+
+    //set the visibility hidden so it will not effect on your web-layout
+    link.style = "visibility:hidden";
+    link.download = fileName + ".csv";
+
+    //this part will append the anchor tag and remove it after automatic click
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
 
 function makeTable() {
     var columds = {};
@@ -81,7 +137,7 @@ function makeTable() {
             "render": function (data, type, row) {
                 var percent = data / row[1] * 100;
                 percent = Math.round(percent*100)/100 + '%';
-                return data.toUnit() + '개 <span class="label label-info">' + percent +'</span>\n<button>전체 회수하기</button>';
+                return data.toUnit() + '개 <span class="label label-info">' + percent +'</span>';
             }
         },
         {
@@ -91,22 +147,19 @@ function makeTable() {
                 percent = Math.round(percent*100)/100 + '%';
                 return data.toUnit() + '개 <span class="label label-primary">' + percent +'</span>';
             }
+        },
+        {
+            "title": "기능",
+            "render": function (data, type, row) {
+                data = '<a class="download" href="#;"><span class="nowrap"><img src="../images/dot.gif" title="다운로드" alt="다운로드"class="icon ic_b_save"> 다운로드</span></a>';
+                data += '<a class="write" href="#;"><span class="nowrap"><img src="../images/dot.gif" title="사용 처리" alt="사용 처리"class="icon ic_b_tblops"> 사용 처리</span></a>'
+                data += '<a class="drop" href="#;"><span class="nowrap"><img src="../images/dot.gif" title="미사용 삭제" alt="미사용 삭제"class="icon ic_b_drop"> 미사용 삭제</span></a>';
+                return data;
+            }
         }
     ];
 
     columds.all = [
-        {
-            "title": "인덱스 번호",
-            "render": function (data, type, row) {
-                return data;
-            }
-        },
-        {
-            "title": "생산 날짜",
-            "render": function (data, type, row) {
-                return data;
-            }
-        },
         {
             "title": "생산 시간",
             "render": function (data, type, row) {
@@ -114,37 +167,84 @@ function makeTable() {
             }
         },
         {
-            "title": "사용 날짜",
+            "title": "제품 번호",
             "render": function (data, type, row) {
+                data = data.insertAt(12, ' ');
+                data = data.insertAt(8, ' ');
+                data = data.insertAt(4, ' ');
                 return data;
             }
         },
         {
             "title": "사용자",
             "render": function (data, type, row) {
-                if(data == "write")
-                    return '<span class="label label-primary">판매중</span>';
-                else if(data == null)
-                    return '<span class="label label-default">미사용</span>' + ' <button>회수하기</button>';
+                if(data == 'write')
+                    return '<span class="label label-warning">판매중</span> <a href="#;"><span class="nowrap"><img src="../images/dot.gif" title="사용자 지정" alt="사용자 지정"class="icon ic_b_usrcheck"> 사용자 지정</span></a>';
+                else if (data)
+                    return '<span class="label label-primary">'+data+'번</span> <a href="#;"><span class="nowrap"><img src="../images/dot.gif" title="사용자 변경" alt="사용자 변경"class="icon ic_b_usrlist"> 사용자 변경</span></a>';
                 else
-                    return data;
+                    return '<span class="label label-default">미사용</span> <a href="#;"><span class="nowrap"><img src="../images/dot.gif" title="사용자 지정" alt="사용자 지정"class="icon ic_b_usrcheck"> 사용자 지정</span></a>';
+
+            }
+        },
+        {
+            "title": "사용 날짜",
+            "render": function (data, type, row) {
+                if(row[2] == 'write')
+                {
+                    return '<span class="label label-warning">판매중</span> <a href="#;"><span class="nowrap"><img src="../images/dot.gif" title="삭제" alt="삭제"class="icon ic_b_drop"> 삭제</span></a>';;
+                }
+                else if(data)
+                {
+                    var date = new Date(data);
+                    date = date.yyyymmdd() + ' ' + date.hhmmss();
+                    return date;
+
+                }
+                else
+                    return '<span class="label label-default">미사용</span> <a href="#;"><span class="nowrap"><img src="../images/dot.gif" title="사용 처리" alt="사용 처리"class="icon ic_b_tblops"> 사용 처리</span></a> <a href="#;"><span class="nowrap"><img src="../images/dot.gif" title="삭제" alt="삭제"class="icon ic_b_drop"> 삭제</span></a>';;
             }
         }
     ];
 
     tables['log'] = $('#table_log').DataTable({
-        "initComplete": function () {
-            $('#table_log_length').append('<form style="display:inline-block"><input style="margin-left:10px" type="radio" name="method" value="day" checked>날짜별 보기<input style="margin-left:10px" type="radio" name="method" value="once">시간별 보기</form>');
-            $('#table_log_length input').change(function(e) {
+        "initComplete" : function() {
+            $('#table_log_length').append('<form style="display:inline-block"><input style="margin-left:10px; margin-right:4px" type="radio" name="method" value="day" checked>날짜별 보기<input style="margin-left:10px;margin-right:4px" type="radio" name="method" value="once">시간별 보기</form><br>');
+            $('#table_log_length input').change(function() {
                 tables['log'].clear();
                 pushData(this.value);
             });
+        },
+        "drawCallback": function () {
             var api = this.api();
-            api.$('td').click(function (e) {
-                alert(this);
-            });
+
+            if ( typeof onceCallback == 'undefined' ) {
+                // It has not... perform the initialization
+                onceCallback = 1;
+                api.$('td a.download').click(function(e) {
+                    e.stopPropagation();
+                    var index = $('#table_log tr').index($(this).parent().parent()) - 1;
+                    var selected_time = tables['log'].column( 0 ).data()[index];
+                    console.log('download '+selected_time);
+                });
+
+                api.$('td a.write').click(function(e) {
+                    e.stopPropagation();
+                    var index = $('#table_log tr').index($(this).parent().parent()) - 1;
+                    var selected_time = tables['log'].column( 0 ).data()[index];
+                    console.log('write '+selected_time);
+                });
+
+                api.$('td a.drop').click(function(e) {
+                    e.stopPropagation();
+                    var index = $('#table_log tr').index($(this).parent().parent()) - 1;
+                    var selected_time = tables['log'].column( 0 ).data()[index];
+                    console.log('drop '+selected_time);
+                });
+            }
         },
 
+        autoWidth: false,
         paging: true,
         "data": [],
         "columns": columds['log'],
@@ -154,10 +254,11 @@ function makeTable() {
     });
 
     tables['all'] = $('#table_all').DataTable({
+        "autoWidth": false,
         "initComplete": function () {
             var api = this.api();
             api.$('tr').click(function (e) {
-
+                alert('what!?');
             });
         },
 
@@ -201,16 +302,15 @@ function pushData(method) {
                 total.used += data.used;
 
                 row_all = [];
-                row_all.push(data.pk_pn);
-                row_all.push(index_date);    // 생산 날짜
-                row_all.push(index_time);    // 생산 시간
-                row_all.push(data.usedTime);    // 사용 시간
+                row_all.push(index_date +' '+index_time);    // 생산 시간
+                row_all.push(data.product_num)  // 제품 번호
                 if(data.fk_kids)               // 사용자
                     row_all.push(data.fk_kids);
                 else if(data.admin_write)        // 판매중
                     row_all.push('write');
                 else                                                    // 미사용
                     row_all.push(null);
+                row_all.push(data.usedTime);    // 사용 시간
                 tables['all'].row.add(row_all);
             }
 
@@ -243,6 +343,6 @@ function pushData(method) {
         }
     }
 
-    tables['log'].draw();
-    tables['all'].draw();
+    tables['log'].draw(true);
+    tables['all'].draw(true);
 }

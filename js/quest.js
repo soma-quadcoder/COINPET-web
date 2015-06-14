@@ -442,7 +442,7 @@ function makeTable(fk_kids, tables, quest_data) {
     ];
 
     tables[fk_kids] = $('#table' + fk_kids).DataTable({
-        "initComplete": function () {
+        "initComplete" : function() {
             $('#table'+fk_kids).after("<button id='quest_add"+fk_kids+"' class='btn btn-primary btn-block btn-filled quest_add'>퀘스트 만들기</button>");
             $('#quest_add'+fk_kids).click(function(e) {
                 e.stopPropagation();
@@ -457,20 +457,28 @@ function makeTable(fk_kids, tables, quest_data) {
                 $('.popup').css("height", $(window).height());
                 $('.panel_add').css("margin-top", ( $(window).height() - $('.panel_add').height() ) / 2);
             });
-
+        },
+        "drawCallback": function () {
             var api = this.api();
-            api.$('td button').click(function (e) {
-                e.stopPropagation();
-                var index = $('#table'+fk_kids+' tr').index($(this).parent().parent()) -1;
-                pk_quest = tables[fk_kids].column( 0 ).data()[index];
 
-                $('#quest_context').html(tables[fk_kids].column(2).data()[index]);
-                $('#quest_exam_kids').html(findChild(fk_kids)+'의 퀘스트 검사하기');
-                $('.exam').show();
+            if ( typeof onceCallback == 'undefined' ) {
+                // It has not... perform the initialization
+                onceCallback = 1;
 
-                $('.popup').css("height", $(window).height());
-                $('.panel_exam').css("margin-top", ( $(window).height() - $('.panel_exam').height() ) / 2);
-            });
+
+                api.$('td button').click(function (e) {
+                    e.stopPropagation();
+                    var index = $('#table' + fk_kids + ' tr').index($(this).parent().parent()) - 1;
+                    pk_quest = tables[fk_kids].column(0).data()[index];
+
+                    $('#quest_context').html(tables[fk_kids].column(2).data()[index]);
+                    $('#quest_exam_kids').html(findChild(fk_kids) + '의 퀘스트 검사하기');
+                    $('.exam').show();
+
+                    $('.popup').css("height", $(window).height());
+                    $('.panel_exam').css("margin-top", ( $(window).height() - $('.panel_exam').height() ) / 2);
+                });
+            }
         },
 
         paging: false,
@@ -508,5 +516,4 @@ function makeTable(fk_kids, tables, quest_data) {
         tables[fk_kids].row.add(rowdata);
     }
     tables[fk_kids].draw();
-
 }
