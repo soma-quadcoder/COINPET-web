@@ -45,6 +45,7 @@ $(document).ready( function() {
                         var time = new Date();
                         time = time.yyyymmdd() +' '+ time.hhmmss();
                         exportData(result.product_num, time);
+                        updateTable();
                         //DownloadJSON2CSV(result.product_num);
                     },
                    error: function (result, status, err) {
@@ -57,8 +58,6 @@ $(document).ready( function() {
             alert('개수를 정확히 입력하세요.');
         return false;
     });
-
-    makeTable();
 
     $.ajax({
         type: 'GET',
@@ -73,6 +72,10 @@ $(document).ready( function() {
 
         }
     });
+
+    makeTable();
+
+
 });
 
 function exportData(objArray, time)
@@ -152,8 +155,10 @@ function makeTable() {
             "title": "기능",
             "render": function (data, type, row) {
                 data = '<a class="download" href="#;"><span class="nowrap"><img src="../images/dot.gif" title="다운로드" alt="다운로드"class="icon ic_b_save"> 다운로드</span></a>';
-                data += '<a class="write" href="#;"><span class="nowrap"><img src="../images/dot.gif" title="등록 처리" alt="등록 처리"class="icon ic_b_tblops"> 등록 처리</span></a>'
-                data += '<a class="drop" href="#;"><span class="nowrap"><img src="../images/dot.gif" title="미등록 삭제" alt="미등록 삭제"class="icon ic_b_drop"> 미등록 삭제</span></a>';
+                if(row[1]-row[2] != 0) {
+                    data += '<a class="write" href="#;"><span class="nowrap"><img src="../images/dot.gif" title="등록 처리" alt="등록 처리"class="icon ic_b_tblops"> 등록 처리</span></a>'
+                    data += '<a class="drop" href="#;"><span class="nowrap"><img src="../images/dot.gif" title="미등록 삭제" alt="미등록 삭제"class="icon ic_b_drop"> 미등록 삭제</span></a>';
+                }
                 return data;
             }
         }
@@ -179,11 +184,11 @@ function makeTable() {
             "title": "사용자",
             "render": function (data, type, row) {
                 if(data == 'write')
-                    return '<span class="label label-warning">판매중</span> <a href="#;"><span class="nowrap"><img src="../images/dot.gif" title="사용자 지정" alt="사용자 지정"class="icon ic_b_usrcheck"> 사용자 지정</span></a>';
+                    return '<span class="label label-warning">판매중</span> <a class="user" href="#;"><span class="nowrap"><img src="../images/dot.gif" title="사용자 지정" alt="사용자 지정"class="icon ic_b_usrcheck"> 사용자 지정</span></a>';
                 else if (data)
-                    return '<span class="label label-primary">'+data+'번</span> <a href="#;"><span class="nowrap"><img src="../images/dot.gif" title="사용자 변경" alt="사용자 변경"class="icon ic_b_usrlist"> 사용자 변경</span></a>';
+                    return '<span class="label label-primary">'+data+'번</span> <a class="user" href="#;"><span class="nowrap"><img src="../images/dot.gif" title="사용자 변경" alt="사용자 변경"class="icon ic_b_usrlist"> 사용자 변경</span></a>';
                 else
-                    return '<span class="label label-default">미등록</span> <a href="#;"><span class="nowrap"><img src="../images/dot.gif" title="사용자 지정" alt="사용자 지정"class="icon ic_b_usrcheck"> 사용자 지정</span></a>';
+                    return '<span class="label label-default">미등록</span> <a class="user" href="#;"><span class="nowrap"><img src="../images/dot.gif" title="사용자 지정" alt="사용자 지정"class="icon ic_b_usrcheck"> 사용자 지정</span></a>';
 
             }
         },
@@ -192,7 +197,7 @@ function makeTable() {
             "render": function (data, type, row) {
                 if(row[2] == 'write')
                 {
-                    return '<span class="label label-warning">판매중</span> <a href="#;"><span class="nowrap"><img src="../images/dot.gif" title="삭제" alt="삭제"class="icon ic_b_drop"> 삭제</span></a>';;
+                    return '<span class="label label-warning">판매중</span> <a class="drop" href="#;"><span class="nowrap"><img src="../images/dot.gif" title="삭제" alt="삭제"class="icon ic_b_drop"> 삭제</span></a>';;
                 }
                 else if(data)
                 {
@@ -202,7 +207,7 @@ function makeTable() {
 
                 }
                 else
-                    return '<span class="label label-default">미등록</span> <a href="#;"><span class="nowrap"><img src="../images/dot.gif" title="등록 처리" alt="등록 처리"class="icon ic_b_tblops"> 등록 처리</span></a> <a href="#;"><span class="nowrap"><img src="../images/dot.gif" title="삭제" alt="삭제"class="icon ic_b_drop"> 삭제</span></a>';;
+                    return '<span class="label label-default">미등록</span> <a class="write" href="#;"><span class="nowrap"><img src="../images/dot.gif" title="등록 처리" alt="등록 처리"class="icon ic_b_tblops"> 등록 처리</span></a> <a class="drop" href="#;"><span class="nowrap"><img src="../images/dot.gif" title="삭제" alt="삭제"class="icon ic_b_drop"> 삭제</span></a>';;
             }
         }
     ];
@@ -222,6 +227,7 @@ function makeTable() {
             api.$('td a').off();
 
             api.$('td a').click(function(e) {
+                console.log('td a is clicked');
                 e.stopPropagation();
                 var index = $('#table_log tr').index($(this).parent().parent()) - 1;
                 var selected = tables['log'].column( 0 ).data()[index];
@@ -232,31 +238,81 @@ function makeTable() {
                 if($('#table_log_length input:checked').val() == 'once')
                    target.time = selected.hhmmss();
 
-                if($(this).className == 'download')
+                if($(this)[0].className == 'download')
                     makeData(target);
-                else if($(this).className == 'write')
+                else if($(this)[0].className == 'write')
                 {
+                    if(confirm('모든 데이터가 등록 처리되어 집니다.\n동의십니까?'))
+                    {
+                        var data = {};
 
+                        if(target.time)
+                            data[target.date] = [target.time];
+                        else {
+                            data[target.date] = [];
+                            for (var index_time in pns[target.date])
+                                data[target.date].push(index_time);
+                        }
+
+                        $.ajax({
+                            type: 'POST',
+                            url: domain+'/api/pn',
+                            headers: {"Authorization": jwt},
+                            data: {"_method":"PUT", "target":data},
+                            success: function() {
+                                alert('등록 처리되었습니다.');
+                                updateTable();
+                            },
+                            error: function() {
+                                alert('에러가 발생하였습니다.');
+                            }
+                        });
+                    }
                 }
-                else if($(this).className == 'drop')
+                else if($(this)[0].className == 'drop')
                 {
+                    if(confirm('모든 데이터가 삭제되어 집니다.\n동의십니까?'))
+                    {
+                        var data = {};
 
+                        if(target.time)
+                            data[target.date] = [target.time];
+                        else {
+                            data[target.date] = [];
+                            for (var index_time in pns[target.date])
+                                data[target.date].push(index_time);
+                        }
+
+                        $.ajax({
+                            type: 'POST',
+                            url: domain+'/api/pn',
+                            headers: {"Authorization": jwt},
+                            data: {"_method":"DELETE", "target":data},
+                            success: function() {
+                                alert('삭제되었습니다.');
+                                updateTable();
+                            },
+                            error: function() {
+                                alert('에러가 발생하였습니다.');
+                            }
+                        });
+                    }
                 }
             });
 
-            api.$('td a.write').click(function(e) {
-                e.stopPropagation();
-                var index = $('#table_log tr').index($(this).parent().parent()) - 1;
-                var selected_time = tables['log'].column( 0 ).data()[index];
-                console.log('write '+selected_time);
-            });
-
-            api.$('td a.drop').click(function(e) {
-                e.stopPropagation();
-                var index = $('#table_log tr').index($(this).parent().parent()) - 1;
-                var selected_time = tables['log'].column( 0 ).data()[index];
-                console.log('drop '+selected_time);
-            });
+            //api.$('td a.write').click(function(e) {
+            //    e.stopPropagation();
+            //    var index = $('#table_log tr').index($(this).parent().parent()) - 1;
+            //    var selected_time = tables['log'].column( 0 ).data()[index];
+            //    console.log('write '+selected_time);
+            //});
+            //
+            //api.$('td a.drop').click(function(e) {
+            //    e.stopPropagation();
+            //    var index = $('#table_log tr').index($(this).parent().parent()) - 1;
+            //    var selected_time = tables['log'].column( 0 ).data()[index];
+            //    console.log('drop '+selected_time);
+            //});
 
         },
 
@@ -271,10 +327,80 @@ function makeTable() {
 
     tables['all'] = $('#table_all').DataTable({
         "autoWidth": false,
-        "initComplete": function () {
+        //"initComplete": function () {
+        //    var api = this.api();
+        //    api.$('tr').click(function (e) {
+        //        alert('what!?');
+        //    });
+        //},
+        "drawCallback": function () {
             var api = this.api();
-            api.$('tr').click(function (e) {
-                alert('what!?');
+            console.log('table_all draw callback');
+
+            api.$('td a').off();
+
+            api.$('td a').click(function(e) {
+                console.log('td a is clicked');
+                e.stopPropagation();
+                var index = $('#table_all tr').index($(this).parent().parent()) - 1;
+                var pn = tables['all'].column(1).data()[index];
+
+                if($(this)[0].className == 'user') {
+                    var fk_kids = prompt("해당 사용자의 fk_kids를 입력하세요.(임시용)","숫자로만 입력하세요");
+                    parseInt(fk_kids);
+                    if(!fk_kids)
+                    {
+                        alert('숫자를 입력하세요.');
+                        return;
+                    }
+                    $.ajax({
+                        type: 'POST',
+                        url: domain + '/api/pnKids',
+                        headers: {"Authorization": jwt},
+                        data: {"product_num": pn, "fk_kids":fk_kids},
+                        success: function () {
+                            alert('변경되었습니다.');
+                            updateTable();
+                        },
+                        error: function () {
+                            alert('에러가 발생하였습니다.');
+                        }
+                    });
+                }
+                else if($(this)[0].className == 'write') {
+                    if(confirm('해당 제품번호가 등록 처리되어 집니다.\n동의십니까?')) {
+                        $.ajax({
+                            type: 'POST',
+                            url: domain + '/api/pn',
+                            headers: {"Authorization": jwt},
+                            data: {"_method": "PUT", "product_num": pn},
+                            success: function () {
+                                alert('등록 처리되었습니다.');
+                                updateTable();
+                            },
+                            error: function () {
+                                alert('에러가 발생하였습니다.');
+                            }
+                        });
+                    }
+                }
+                else if($(this)[0].className == 'drop') {
+                    if(confirm('해당 제품번호가 삭제되어 집니다.\n동의십니까?')) {
+                        $.ajax({
+                            type: 'POST',
+                            url: domain + '/api/pn',
+                            headers: {"Authorization": jwt},
+                            data: {"_method": "DELETE", "product_num": pn},
+                            success: function () {
+                                alert('삭제되었습니다.');
+                                updateTable();
+                            },
+                            error: function () {
+                                alert('에러가 발생하였습니다.');
+                            }
+                        });
+                    }
+                }
             });
         },
 
@@ -294,7 +420,6 @@ function makeData(target) {
 
     for(var index_time in pns[target.date])
     {
-        var temp = target.date;
         if(target.time && target.time != index_time)
             continue;
 
@@ -311,6 +436,28 @@ function makeData(target) {
         time += ' ' + target.time;
 
     exportData(result, time);
+}
+
+function updateTable()
+{
+    $.ajax({
+        type: 'GET',
+        // url is get pn gen log
+        url: domain+'/api/getAllPn/',
+        headers: {"Authorization": jwt},
+        success: function (result) {
+            pns = result;
+            tables['log'].clear();
+            tables['all'].clear();
+            if($('#table_log_length input:checked').val() == 'day')
+                pushData('day');
+            else
+                pushData('once');
+        },
+        error: function (result, status, err) {
+            alert('서버로부터 데이터를 갱신하는데 실패하였습니다.');
+        }
+    });
 }
 
 function pushData(method) {
