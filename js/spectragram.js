@@ -31,7 +31,7 @@ if (typeof Object.create !== 'function') {
             self.elem = elem;
             self.$elem = $(elem);
 
-            self.api = 'https://api.instagram.com/v1',
+            self.api = 'https://*api*/.instagram.com/v1',
 			
 			self.accessData = $.fn.spectragram.accessData,
 						

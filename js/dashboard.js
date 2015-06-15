@@ -55,6 +55,7 @@ var options =
     //Number - Spacing between data sets within X values
     barDatasetSpacing : 1,
 
+    labelMoney : true
 };
 
 function goal_drawChart(fk_kids) {
@@ -177,7 +178,7 @@ function submitQuest() {
     if(quest_selected) {
         $.ajax({
             type: 'POST',
-            url: domain + '/api/quest/parents/' + quest_selected,
+            url: domain + /*api*/'/quest/parents/' + quest_selected,
             headers : {"Authorization": jwt},
             data: {
                 type: type,
@@ -232,7 +233,7 @@ $(document).ready(function() {
 
             $.ajax({
                 type: 'GET',
-                url: domain+'/api/getQuestInfo/0',
+                url: domain+/*api*/'/getQuestInfo/0',
                 headers: {"Authorization": jwt},
                 success: function (result) {
 
@@ -299,7 +300,7 @@ $(document).ready(function() {
         success: function (html) {
             $.ajax({
                 type: 'GET',
-                url: domain + '/api/saving/',
+                url: domain + /*api*/'/saving/',
                 headers: {"Authorization": jwt},
                 success: function (result) {
 
@@ -338,7 +339,7 @@ function sumCurrent(fk_kids) {
 
     $.ajax({
         type: 'GET',
-        url: domain + '/api/goal/current/'+fk_kids,
+        url: domain + /*api*/'/goal/current/'+fk_kids,
         headers: {"Authorization": jwt},
         success: function (result) {
 
@@ -506,7 +507,7 @@ function calculateWeek(fk_kids, html){
 
     $.ajax({
         type: 'GET',
-        url: domain + '/api/saving/' + fk_kids,
+        url: domain + /*api*/'/saving/' + fk_kids,
         headers : {"Authorization": jwt},
         success: function (result) {
             var start = new Date();

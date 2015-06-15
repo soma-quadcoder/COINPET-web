@@ -23,7 +23,7 @@ $(document).ready(function() {
         doing = 1;
         $.ajax({
             type: 'POST',
-            url: domain+'/api/user/parents',
+            url: domain+/*api*/'/user/parents',
             data: {
                 email: $('.form-email').val(),
                 passwd: $('.form-password').val()

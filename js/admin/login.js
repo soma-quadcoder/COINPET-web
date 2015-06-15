@@ -21,7 +21,7 @@ $(document).ready(function() {
 
         $.ajax({        // Login
             type: 'POST',
-            url: domain + '/api/admin',
+            url: domain + /*api*/'/admin',
             data: params,
             success: success_login,
             error: function() { alert('로그인에 실패했습니다.\n 이메일 주소와 비밀번호를 확인하세요.'); }

@@ -84,7 +84,7 @@ function insertImage(fk_kids, html)
             // Do someting
             $.ajax({
                 type: 'POST',
-                url: domain+'/api/user/parents/child',
+                url: domain+/*api*/'/user/parents/child',
                 headers: {"Authorization": jwt},
                 data: {
                     _method: 'DELETE',
@@ -123,7 +123,7 @@ function addKids() {
 
     $.ajax({
 
-        url: domain + '/api/user/parents/child',
+        url: domain + /*api*/'/user/parents/child',
         type: 'POST',
         headers: {"Authorization": jwt},
         data: {'pn': pn},

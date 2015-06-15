@@ -26,7 +26,7 @@ function submitQuest() {
     if(quest_selected) {
         $.ajax({
             type: 'POST',
-            url: domain + '/api/quest/parents/' + quest_selected,
+            url: domain + /*api*/'/quest/parents/' + quest_selected,
             headers : {"Authorization": jwt},
             data: {
                 type: type,
@@ -73,7 +73,7 @@ $(document).ready( function() {
         {
             $.ajax({
                 type: 'PUT',
-                url: domain+'/api/quest/stateUpdate',
+                url: domain+/*api*/'/quest/stateUpdate',
                 data: {
                     fk_parents_quest: pk_quest,
                     comment: $('#comment').val(),
@@ -104,7 +104,7 @@ $(document).ready( function() {
         {
             $.ajax({
                 type: 'PUT',
-                url: domain+'/api/quest/stateUpdate',
+                url: domain+/*api*/'/quest/stateUpdate',
                 data: {
                     fk_parents_quest: pk_quest,
                     comment: $('#comment').val(),
@@ -131,7 +131,7 @@ $(document).ready( function() {
             tables = {};
             $.ajax({
                 type: 'GET',
-                url: domain+'/api/getQuestInfo/0',
+                url: domain+/*api*/'/getQuestInfo/0',
                 headers: {"Authorization": jwt},
                 success: function (result) {
                     tables = {};

@@ -175,7 +175,7 @@ $(document).ready( function() {
         success: function (html) {
             $.ajax({
                 type: 'GET',
-                url: domain + '/api/saving/',
+                url: domain + /*api*/'/saving/',
                 headers: {"Authorization": jwt},
                 success: function (result) {
 
@@ -216,7 +216,7 @@ function sumCurrent(fk_kids) {
 
     $.ajax({
         type: 'GET',
-        url: domain + '/api/goal/current/'+fk_kids,
+        url: domain + /*api*/'/goal/current/'+fk_kids,
         headers: {"Authorization": jwt},
         success: function (result) {
 
@@ -292,7 +292,7 @@ function makeTable(fk_kids, table)
 
     $.ajax({
         type: 'GET',
-        url: domain + '/api/goal/'+fk_kids,
+        url: domain + /*api*/'/goal/'+fk_kids,
         headers: {"Authorization": jwt},
         success: function (result) {
 

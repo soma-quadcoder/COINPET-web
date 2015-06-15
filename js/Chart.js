@@ -977,7 +977,10 @@
 
 								//Include any colour information about the element
 								//tooltipLabels.push(helpers.template(this.options.multiTooltipTemplate, element));
-								tooltipLabels.push(helpers.template(this.options.multiTooltipTemplate, element).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")+'원');
+								if(this.options.labelMoney)
+									tooltipLabels.push(helpers.template(this.options.multiTooltipTemplate, element).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")+'원');
+								if(this.options.labelPeople)
+									tooltipLabels.push(helpers.template(this.options.multiTooltipTemplate, element).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")+'명');
 								tooltipColors.push({
 									fill: element._saved.fillColor || element.fillColor,
 									stroke: element._saved.strokeColor || element.strokeColor
@@ -1026,7 +1029,11 @@
 						title: ChartElements[0].label,
 						chart: this.chart,
 						ctx: this.chart.ctx,
-						custom: this.options.customTooltips
+						custom: this.options.customTooltips,
+
+						//added by jeon
+						labelMoney : this.options.labelMoney,
+						labelPeople : this.options.labelPeople
 					}).draw();
 
 				} else {
@@ -1483,7 +1490,11 @@
 
 			for (var i=0; i<=this.steps; i++){
 				this.yLabels.push(template(this.templateString,{value:(this.min + (i * this.stepValue)).toFixed(stepDecimalPlaces)}));
-				this.yLabels[i] = this.yLabels[i].replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")+'원';
+
+				if(this.labelMoney)
+					this.yLabels[i] = this.yLabels[i].replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")+'원';
+				else if(this.labelPeople)
+					this.yLabels[i] = this.yLabels[i].replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")+'명';
 			}
 			this.yLabelWidth = (this.display && this.showLabels) ? longestText(this.ctx,this.font,this.yLabels) : 0;
 		},
@@ -2730,7 +2741,11 @@
 				gridLineColor : (this.options.scaleShowGridLines) ? this.options.scaleGridLineColor : "rgba(0,0,0,0)",
 				padding: (this.options.showScale) ? 0 : this.options.pointDotRadius + this.options.pointDotStrokeWidth,
 				showLabels : this.options.scaleShowLabels,
-				display : this.options.showScale
+				display : this.options.showScale,
+
+				//added by Jeon
+				labelMoney : this.options.labelMoney,
+				labelPeople : this.options.labelPeople
 			};
 
 			if (this.options.scaleOverride){
@@ -3823,7 +3838,10 @@
 				gridLineColor : (this.options.scaleShowGridLines) ? this.options.scaleGridLineColor : "rgba(0,0,0,0)",
 				padding : (this.options.showScale) ? 0 : (this.options.barShowStroke) ? this.options.barStrokeWidth : 0,
 				showLabels : this.options.scaleShowLabels,
-				display : this.options.showScale
+				display : this.options.showScale,
+				// added by jeon
+				labelMoney : this.options.labelMoney,
+				labelPeople : this.options.labelPeople
 			};
 
 			if (this.options.scaleOverride){
@@ -4113,7 +4131,10 @@
 
 
 								//Include any colour information about the element
-								tooltipLabels.push(helpers.template(this.options.multiTooltipTemplate, element).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")+'원');
+								if(this.options.labelMoney)
+									tooltipLabels.push(helpers.template(this.options.multiTooltipTemplate, element).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")+'원');
+								else if(this.options.labelPeople)
+									tooltipLabels.push(helpers.template(this.options.multiTooltipTemplate, element).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")+'명');
 								//tooltipLabels.push(helpers.template(this.options.multiTooltipTemplate, element));
 								tooltipColors.push({
 									fill: element._saved.fillColor || element.fillColor,

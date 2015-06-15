@@ -236,7 +236,7 @@ $(document).ready( function() {
 
     $.ajax({
         type: 'GET',
-        url: domain + '/api/saving/',
+        url: domain + /*api*/'/saving/',
         headers: {"Authorization": jwt},
         success: function (result) {
 

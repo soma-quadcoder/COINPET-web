@@ -11,7 +11,7 @@ function addKids() {
 
     $.ajax({       // Login
 
-        url: domain + '/api/user/parents/child',
+        url: domain + /*api*/'/user/parents/child',
         type: 'POST',
         headers: {"Authorization": jwt},
         data: {'pn': pn},

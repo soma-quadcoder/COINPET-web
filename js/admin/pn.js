@@ -30,7 +30,7 @@ $(document).ready( function() {
 
                 $.ajax({
                     type: 'POST',
-                    url: domain + '/api/pnGenerator/',
+                    url: domain + /*api*/'/pnGenerator/',
                     headers: {"Authorization": jwt},
                     data: {
                         count: count
@@ -62,7 +62,7 @@ $(document).ready( function() {
     $.ajax({
         type: 'GET',
         // url is get pn gen log
-        url: domain+'/api/getAllPn/',
+        url: domain+/*api*/'/getAllPn/',
         headers: {"Authorization": jwt},
         success: function (result) {
             pns = result;
@@ -184,11 +184,14 @@ function makeTable() {
             "title": "사용자",
             "render": function (data, type, row) {
                 if(data == 'write')
-                    return '<span class="label label-warning">판매중</span> <a class="user" href="#;"><span class="nowrap"><img src="../images/dot.gif" title="사용자 지정" alt="사용자 지정"class="icon ic_b_usrcheck"> 사용자 지정</span></a>';
+                    return '<span class="label label-warning">판매중</span>';
+                    //return '<span class="label label-warning">판매중</span> <a class="user" href="#;"><span class="nowrap"><img src="../images/dot.gif" title="사용자 지정" alt="사용자 지정"class="icon ic_b_usrcheck"> 사용자 지정</span></a>';
                 else if (data)
-                    return '<span class="label label-primary">'+data+'번</span> <a class="user" href="#;"><span class="nowrap"><img src="../images/dot.gif" title="사용자 변경" alt="사용자 변경"class="icon ic_b_usrlist"> 사용자 변경</span></a>';
+                    return '<span class="label label-primary">'+data+'번</span> ';
+                    //return '<span class="label label-primary">'+data+'번</span> <a class="user" href="#;"><span class="nowrap"><img src="../images/dot.gif" title="사용자 변경" alt="사용자 변경"class="icon ic_b_usrlist"> 사용자 변경</span></a>';
                 else
-                    return '<span class="label label-default">미등록</span> <a class="user" href="#;"><span class="nowrap"><img src="../images/dot.gif" title="사용자 지정" alt="사용자 지정"class="icon ic_b_usrcheck"> 사용자 지정</span></a>';
+                    return '<span class="label label-default">미등록</span>';
+                    //return '<span class="label label-default">미등록</span> <a class="user" href="#;"><span class="nowrap"><img src="../images/dot.gif" title="사용자 지정" alt="사용자 지정"class="icon ic_b_usrcheck"> 사용자 지정</span></a>';
 
             }
         },
@@ -197,7 +200,7 @@ function makeTable() {
             "render": function (data, type, row) {
                 if(row[2] == 'write')
                 {
-                    return '<span class="label label-warning">판매중</span> <a class="drop" href="#;"><span class="nowrap"><img src="../images/dot.gif" title="삭제" alt="삭제"class="icon ic_b_drop"> 삭제</span></a>';;
+                    return '<span class="label label-warning">판매중</span>';
                 }
                 else if(data)
                 {
@@ -207,7 +210,16 @@ function makeTable() {
 
                 }
                 else
-                    return '<span class="label label-default">미등록</span> <a class="write" href="#;"><span class="nowrap"><img src="../images/dot.gif" title="등록 처리" alt="등록 처리"class="icon ic_b_tblops"> 등록 처리</span></a> <a class="drop" href="#;"><span class="nowrap"><img src="../images/dot.gif" title="삭제" alt="삭제"class="icon ic_b_drop"> 삭제</span></a>';;
+                    return '<span class="label label-default">미등록</span> ';
+            }
+        },
+        {
+            "title": "기능",
+            "render": function (data, type, row) {
+                if(row[2] == null)
+                    return '<a class="write" href="#;"><span class="nowrap"><img src="../images/dot.gif" title="등록 처리" alt="등록 처리"class="icon ic_b_tblops"> 등록 처리</span></a> <a class="drop" href="#;"><span class="nowrap"><img src="../images/dot.gif" title="삭제" alt="삭제"class="icon ic_b_drop"> 삭제</span></a>';
+                else
+                    return '<a class="drop" href="#;"><span class="nowrap"><img src="../images/dot.gif" title="삭제" alt="삭제"class="icon ic_b_drop"> 삭제</span></a>';
             }
         }
     ];
@@ -256,7 +268,7 @@ function makeTable() {
 
                         $.ajax({
                             type: 'POST',
-                            url: domain+'/api/pn',
+                            url: domain+/*api*/'/pn',
                             headers: {"Authorization": jwt},
                             data: {"_method":"PUT", "target":data},
                             success: function() {
@@ -285,7 +297,7 @@ function makeTable() {
 
                         $.ajax({
                             type: 'POST',
-                            url: domain+'/api/pn',
+                            url: domain+/*api*/'/pn',
                             headers: {"Authorization": jwt},
                             data: {"_method":"DELETE", "target":data},
                             success: function() {
@@ -300,14 +312,14 @@ function makeTable() {
                 }
             });
 
-            //api.$('td a.write').click(function(e) {
+            //*api*/.$('td a.write').click(function(e) {
             //    e.stopPropagation();
             //    var index = $('#table_log tr').index($(this).parent().parent()) - 1;
             //    var selected_time = tables['log'].column( 0 ).data()[index];
             //    console.log('write '+selected_time);
             //});
             //
-            //api.$('td a.drop').click(function(e) {
+            //*api*/.$('td a.drop').click(function(e) {
             //    e.stopPropagation();
             //    var index = $('#table_log tr').index($(this).parent().parent()) - 1;
             //    var selected_time = tables['log'].column( 0 ).data()[index];
@@ -355,7 +367,7 @@ function makeTable() {
                     }
                     $.ajax({
                         type: 'POST',
-                        url: domain + '/api/pnKids',
+                        url: domain + /*api*/'/pnKids',
                         headers: {"Authorization": jwt},
                         data: {"product_num": pn, "fk_kids":fk_kids},
                         success: function () {
@@ -371,7 +383,7 @@ function makeTable() {
                     if(confirm('해당 제품번호가 등록 처리되어 집니다.\n동의십니까?')) {
                         $.ajax({
                             type: 'POST',
-                            url: domain + '/api/pn',
+                            url: domain + /*api*/'/pn',
                             headers: {"Authorization": jwt},
                             data: {"_method": "PUT", "product_num": pn},
                             success: function () {
@@ -388,7 +400,7 @@ function makeTable() {
                     if(confirm('해당 제품번호가 삭제되어 집니다.\n동의십니까?')) {
                         $.ajax({
                             type: 'POST',
-                            url: domain + '/api/pn',
+                            url: domain + /*api*/'/pn',
                             headers: {"Authorization": jwt},
                             data: {"_method": "DELETE", "product_num": pn},
                             success: function () {
@@ -443,7 +455,7 @@ function updateTable()
     $.ajax({
         type: 'GET',
         // url is get pn gen log
-        url: domain+'/api/getAllPn/',
+        url: domain+/*api*/'/getAllPn/',
         headers: {"Authorization": jwt},
         success: function (result) {
             pns = result;
