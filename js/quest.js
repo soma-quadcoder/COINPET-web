@@ -367,14 +367,6 @@ function makeTable(fk_kids, tables, quest_data) {
             "title": "유형",
             "render": function (data, type, row) {
 
-                //Bootstrap label example
-                //<span class="label label-default">Default</span>
-                //<span class="label label-primary">Primary</span>
-                //<span class="label label-success">Success</span>
-                //<span class="label label-info">Info</span>
-                //<span class="label label-warning">Warning</span>
-                //<span class="label label-danger">Danger</span>
-
                 if (data == "study") return '<span class="label label-primary">공부</span>';
                 else if (data == "exercise") return '<span class="label label-success">운동</span>';
                 else if (data == "saving") return '<span class="label label-info">저금</span>';

@@ -196,7 +196,6 @@ function makeTable() {
     ];
 
     table = $('#table_user').DataTable({
-        "order": [[ 0, 'desc' ]],
         "initComplete" : function() {
             console.log('table_user init callback');
         },
@@ -204,6 +203,7 @@ function makeTable() {
             var api = this.api();
             console.log('table_user draw callback');
         },
+
         autoWidth: false,
         paging: true,
         "data": [],

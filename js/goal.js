@@ -271,7 +271,19 @@ function makeTable(fk_kids, table)
                 return data.toUnit(true);
             }
         },
-        {"title" : "상태"}
+        {
+            "title" : "상태",
+            "render" : function (data, type, row) {
+                if(data == 'fail')
+                    return '<span class="label label-danger">실패</span>';
+                else if(data == 'doing')
+                    return '<span class="label label-info">진행중</span>';
+                else if(data == 'success')
+                    return '<span class="label label-success">성공</span>';
+                else
+                    return '';
+            }
+        }
     ];
 
     table = $('#table'+fk_kids).DataTable({
