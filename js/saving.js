@@ -59,8 +59,9 @@ var options = {
     barDatasetSpacing : 1,
 
     //String - A legend template
-    legendTemplate : "<div><ul class=\"<%=name.toLowerCase()%>-legend\"><div>자녀선택</div><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].fillColor%>\"></span><%if(datasets[i].label){%><input type=\"checkbox\" checked><%=datasets[i].label%><%}%></li><%}%></ul></div>"
+    legendTemplate : "<div><ul class=\"<%=name.toLowerCase()%>-legend\"><div>자녀선택</div><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].fillColor%>\"></span><%if(datasets[i].label){%><input type=\"checkbox\" checked><%=datasets[i].label%><%}%></li><%}%></ul></div>",
 
+    labelMoney : true
 };
 
 function week_drawChart() {

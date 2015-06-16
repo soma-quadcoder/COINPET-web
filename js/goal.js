@@ -52,6 +52,7 @@ var options =
     //Number - Spacing between data sets within X values
     barDatasetSpacing : 1,
 
+    labelMoney : true
 };
 
 function goal_drawChart(fk_kids) {
