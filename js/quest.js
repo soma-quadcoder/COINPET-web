@@ -395,12 +395,13 @@ function makeTable(fk_kids, tables, quest_data) {
                 if (!data)
                     return "데이터가 없습니다.";
 
-                var token = {};
-                token.value = data.split("T");
-                token.time = token.value[1].split(":");
-                token.time = token.time[0] + '시 ' + token.time[1] + '분';
-
-                return token.value[0];
+                return data;
+                //var token = {};
+                //token.value = data.split("T");
+                //token.time = token.value[1].split(":");
+                //token.time = token.time[0] + '시 ' + token.time[1] + '분';
+                //
+                //return token.value[0];
                 //return token.value[0] + ' ' + token.time;
             }
         },
