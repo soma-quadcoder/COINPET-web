@@ -476,7 +476,7 @@ function calculateQuest(fk_kids, quest_data, html)
         var text = '무난하군요. _name 아이의 퀘스트 성공률은 평균적입니다.<br>'
             + '우리 _name 아이가 잘 할 수 있는 퀘스트는 어떤 퀘스트일까요?<br>'
             + '성공률이 높었던 유형의 퀘스트를 추천드립니다.';
-        quest_rec[fk_kids] = quest_type_array[0][0];
+        quest_rec[fk_kids] = quest_type_array[0][1];
     }
     else {
         var text = '_name 아이의 퀘스트 성공률이 다소 낮은 편입니다.<br>'
