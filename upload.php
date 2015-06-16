@@ -89,6 +89,7 @@ if ($_FILES)
    }
    $name = $name.".".$ext;
 
+   /*
    if($_POST[width] || $_POST[height])
    {
       use \Eventviva\ImageResize;
@@ -102,6 +103,8 @@ if ($_FILES)
 
       $image->save($_FILES['filename']['tmp_name']);
    }
+   */
+   
 
    $success = move_uploaded_file ($_FILES['filename']['tmp_name'], $name);
 
