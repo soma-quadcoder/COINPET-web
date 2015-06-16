@@ -20,6 +20,11 @@ var color = [{
     strokeColor: "rgba(151,187,205,0.8)",
     highlightFill: "rgba(151,187,205,0.75)",
     highlightStroke: "rgba(151,187,205,1)"
+},{
+    fillColor: "rgba(187,151,205,0.5)",
+    strokeColor: "rgba(187,151,205,0.8)",
+    highlightFill: "rgba(187,151,205,0.75)",
+    highlightStroke: "rgba(187,151,205,1)"
 }];
 
 var options = {

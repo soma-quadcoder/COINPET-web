@@ -29,11 +29,9 @@ $(document).ready(function() {
         }
     });
 
-    $("#inputFile").change(function(e) {
-        $('#submitForm').submit();
-    });
 
-    $("#submitForm").submit(function(e) {
+
+    $("#inputFile").change(function(e) {
         doing = 1;
 
         var formData = new FormData();
@@ -75,7 +73,7 @@ function insertImage(fk_kids, html)
         .replace(/_fk_kids/g, fk_kids));
 
     $('#upload'+fk_kids).click(function() {
-        $( "#inputFile").click();
+        $("#inputFile").click();
         selected_fk_kids = fk_kids;
     });
 
