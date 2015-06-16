@@ -356,10 +356,6 @@ function sumCurrent(fk_kids) {
 
 function calculateQuest(fk_kids, quest_data, html)
 {
-    if( quest_data == null) {
-        alert(fk_kids + '의 진행중인 퀘스트가 없습니다.');
-        return;
-    }
 
     var quest_finish = 0;
     var quest_type_json = {};
@@ -375,6 +371,7 @@ function calculateQuest(fk_kids, quest_data, html)
     //quest_type_json.study.finish = 0;
     //quest_type_json.exercise.finish = 0;
     //quest_type_json.etc.finish = 0;
+
 
     for(var index_data in quest_data)
     {
@@ -414,10 +411,27 @@ function calculateQuest(fk_kids, quest_data, html)
     }
 
     var quest_finish_percent = quest_finish / (index_data*1+1) * 100;
+    quest_finish_percent = Math.round(quest_finish_percent*100)/100 + '%';
+
+    var quest_class_left = "col-md-6";
+    var quest_class_right = "col-md-6";
+    var quest_class_center = "";
+    // no quest data
+    if(!quest_data){
+        quest_finish_percent = "(진행한 퀘스트 없음)";
+        quest_class_left = "col-md-6 col-md-offset-3";
+        quest_class_right = "hide";
+        quest_class_center = "text-center";
+    }
+
+
     $('#insertQuest').prepend(html
-        .replace(/_percent/g, Math.round(quest_finish_percent*100)/100)
+        .replace(/_percent/g, quest_finish_percent)
         .replace(/_fk_kids/g, fk_kids)
-        .replace(/_name/g, findChild(fk_kids)));
+        .replace(/_name/g, findChild(fk_kids))
+        .replace('_class_left', quest_class_left)
+        .replace('_class_right', quest_class_right)
+        .replace(/_class_center/g, quest_class_center));
 
     var type_bar = '<li><span>_type _percent%</span><div class="skill-bar-holder"><div class="skill-capacity" style="width:_percent%"></div></div></li>';
     $.each(quest_type_array, function(index, value) {
