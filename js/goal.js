@@ -98,7 +98,7 @@ function goal_drawChart(fk_kids) {
         var a = new Date(index_date);
         a.setHours(23); a.setMinutes(59); a.setSeconds(59);
 
-        if(a < startDate || goalDate < a)
+        if(a < startDate || a > goalDate)
             continue;
 
         if( !saving[index_date][fk_kids])
@@ -112,6 +112,8 @@ function goal_drawChart(fk_kids) {
                 continue;
 
             dayMoney += data_saving.now_cost;
+            if(dayMoney > current_goals[fk_kids].goal_cost)
+                dayMoney = current_goals[fk_kids].goal_cost;
         }
 
         dataset_bar.push(dayMoney);
@@ -125,7 +127,7 @@ function goal_drawChart(fk_kids) {
 
     $('#content'+fk_kids).html(goal.content+'<br> ');
     $('#now'+fk_kids).html(dayMoney.toUnit(true)+'<br>('+startDate.yyyymmdd()+' 부터)');
-    $('#goal'+fk_kids).html(goal.goal_cost.toUnit(true)+'<br>('+goalDate.yyyymmdd()+' 까지)');
+    $('#goal'+fk_kids).html('<b style="color:#ff0000">'+goal.goal_cost.toUnit(true)+'</b><br>('+goalDate.yyyymmdd()+' 까지)');
 
     if(chart[fk_kids])
         chart[fk_kids].destroy();
@@ -247,12 +249,17 @@ function makeTable(fk_kids, table)
                 //return token.value[0] + ' ' + token.time;
             }
         },
-        {"title" : "종료일",
+        {"title" : "종료일\n(자정 기준)",
             "render": function (data, type, row) {
                 if ( !data )
                     return "데이터가 없습니다.";
 
-                return data;
+                var token = {};
+                token.value = data.split("T");
+                token.time = token.value[1].split(":");
+                token.time = token.time[0] + '시 ' + token.time[1] + '분';
+
+                return token.value[0];
 
                 //var token = {};
                 //token.value = data.split("T");

@@ -196,38 +196,24 @@ $(document).ready( function() {
 
 });
 
-function calculateQuest(fk_kids, quest_data, html)
-{
-    if( quest_data == null) {
-        alert(fk_kids + '의 진행중인 퀘스트가 없습니다.');
-        return;
-    }
+function calculateQuest(fk_kids, quest_data, html) {
+    //if( quest_data == null) {
+    //    alert(fk_kids + '의 진행중인 퀘스트가 없습니다.');
+    //    return;
+    //}
 
     var quest_finish = 0;
     var quest_type_json = {};
     var quest_type_array = [];
-    //quest_type_json.study = {};
-    //quest_type_json.exercise = {};
-    //quest_type_json.etc = {};
-    //
-    //quest_type_json.study.count = 0;
-    //quest_type_json.exercise.count = 0;
-    //quest_type_json.etc.count = 0;
-    //
-    //quest_type_json.study.finish = 0;
-    //quest_type_json.exercise.finish = 0;
-    //quest_type_json.etc.finish = 0;
 
-    for(var index_data in quest_data)
-    {
+    for (var index_data in quest_data) {
         var quest_type = quest_data[index_data].type;
 
-        if( !quest_type)
+        if (!quest_type)
             quest_type = "etc";
 
         quest_finish += (state[quest_data[index_data].state] == "finish");
-        if( !quest_type_json[quest_type] )
-        {
+        if (!quest_type_json[quest_type]) {
             quest_type_json[quest_type] = {};
             quest_type_json[quest_type].count = 0;
             quest_type_json[quest_type].finish = 0;
@@ -236,95 +222,117 @@ function calculateQuest(fk_kids, quest_data, html)
         quest_type_json[quest_type].count++;
     }
 
-    $.each(quest_type_json ,function(key, value)
-    {
+    $.each(quest_type_json, function (key, value) {
         var quest_type_finish_percent = value.finish / value.count * 100;
 
-        if(!quest_type_finish_percent) quest_type_finish_percent = 0;
+        if (!quest_type_finish_percent) quest_type_finish_percent = 0;
 
         quest_type_array.push([key, quest_type_finish_percent, value.count]);
     });
 
-    quest_type_array.sort(function(a,b){return b[1]-a[1]});
-    for(var index in quest_type_array)
-    {
-        if(quest_type_array[index][0] == "etc") {
+    quest_type_array.sort(function (a, b) {
+        return b[1] - a[1]
+    });
+    for (var index in quest_type_array) {
+        if (quest_type_array[index][0] == "etc") {
             quest_type_array.push(["etc", quest_type_array[index][1], quest_type_array[index][2]]);
             quest_type_array.splice(index, 1);
             break;
         }
     }
+    var quest_finish_percent = quest_finish / (index_data * 1 + 1) * 100;
+    quest_finish_percent = Math.round(quest_finish_percent * 100) / 100 + '%';
 
-    var quest_finish_percent = quest_finish / (index_data*1+1) * 100;
-    $('#insert_section').append(html
-        .replace(/_percent/g, Math.round(quest_finish_percent*100)/100)
+    var quest_class_left = "col-md-6";
+    var quest_class_right = "col-md-6";
+    var quest_class_center = "";
+    // no quest data
+    if (!quest_data) {
+        quest_finish_percent = "(진행한 퀘스트 없음)";
+        quest_class_left = "col-md-6 col-md-offset-3";
+        quest_class_right = "hide";
+        quest_class_center = "text-center";
+    }
+
+    $('#insertQuest').prepend(html
+        .replace(/_percent/g, quest_finish_percent)
         .replace(/_fk_kids/g, fk_kids)
-        .replace(/_name/g, findChild(fk_kids)));
+        .replace(/_name/g, findChild(fk_kids))
+        .replace('_class_left', quest_class_left)
+        .replace('_class_right', quest_class_right)
+        .replace(/_class_center/g, quest_class_center));
 
-    var type_bar = '<li><span>_type _percent%</span><div class="skill-bar-holder"><div class="skill-capacity" style="width:_percent%"></div></div></li>';
-    $.each(quest_type_array, function(index, value) {
-        var label;
-        if (value[0] == "study")
-            label = '<span class="label label-primary">공부</span>';
-        else if (value[0] == "exercise")
-            label = '<span class="label label-success">운동</span>';
-        else if (value[0] == "saving")
-            label = '<span class="label label-info">저금</span>';
-        else if (value[0] == "help")
-            label = '<span class="label label-warning">도움</span>';
-        else
-            label = '<span class="label label-default">기타</span>';
+    if(quest_data) {
+        var type_bar = '<li><span>_type _percent%</span><div class="skill-bar-holder"><div class="skill-capacity" style="width:_percent%"></div></div></li>';
+        $.each(quest_type_array, function (index, value) {
+            var label;
+            if (value[0] == "study")
+                label = '<span class="label label-primary">공부</span>';
+            else if (value[0] == "exercise")
+                label = '<span class="label label-success">운동</span>';
+            else if (value[0] == "saving")
+                label = '<span class="label label-info">저금</span>';
+            else if (value[0] == "help")
+                label = '<span class="label label-warning">도움</span>';
+            else
+                label = '<span class="label label-default">기타</span>';
 
-        $('#insert_quest_type' + fk_kids).append(type_bar
-            .replace('_type', label)
-            .replace(/_percent/g, Math.round(value[1] * 100) / 100));
-    });
+            $('#insert_quest_type' + fk_kids).append(type_bar
+                .replace('_type', label)
+                .replace(/_percent/g, Math.round(value[1] * 100) / 100));
+        });
 
-    quest_rec[fk_kids] = {};
-    if(quest_finish_percent > 90)
-    {
-        var text = '아주 좋습니다! _name 아이의 퀘스트 성공률은 아주 높은 편입니다.<br>'
-            +'우리 _name에게는 새로운 유형의 퀘스트를 주는건 어떨까요?<br>'
-            +'상대적으로 수행 횟수가 낮은 퀘스트를 추천드립니다.';
+        quest_rec[fk_kids] = {};
+        if (quest_finish_percent > 90) {
+            var text = '아주 좋습니다! _name 아이의 퀘스트 성공률은 아주 높은 편입니다.<br>'
+                + '우리 _name에게는 새로운 유형의 퀘스트를 주는건 어떨까요?<br>'
+                + '상대적으로 수행 횟수가 낮은 퀘스트를 추천드립니다.';
 
-        quest_type_array.splice(-1, 1);
-        quest_type_array.sort(function(a,b){return a[2]-b[2]});
-        quest_rec[fk_kids].type = quest_type_array[0][0];
+            quest_type_array.splice(-1, 1);
+            quest_type_array.sort(function (a, b) {
+                return a[2] - b[2]
+            });
+            quest_rec[fk_kids].type = quest_type_array[0][0];
 
-    }
-    else if(quest_finish_percent > 70) {
-        var text = '좋습니다! _name 아이의 퀘스트 성공률은 다소 높은 편입니다.<br>'
-            + '우리 _name에게는 다소 성공률이 낮았던 퀘스트를 다시 도전해 보도록 하면 어떨까요?<br>'
-            + '어떤 임무든 척척 해낼 수 있는 아이가 되도록 도와주세요.';
-
-        quest_type_array.splice(-1, 1);
-        quest_type_array.sort(function(a,b){return a[1]-b[1]});
-        quest_rec[fk_kids].type = quest_type_array[0][0];
-    }
-    else if(quest_finish_percent > 50) {
-        var text = '무난하군요. _name 아이의 퀘스트 성공률은 평균적입니다.<br>'
-            + '우리 _name 아이가 잘 할 수 있는 퀘스트는 어떤 퀘스트일까요?<br>'
-            + '성공률이 높었던 유형의 퀘스트를 추천드립니다.';
-        quest_rec[fk_kids].type = quest_type_array[0][0];
-    }
-    else {
-        var text = '_name 아이의 퀘스트 성공률이 다소 낮은 편입니다.<br>'
-            + '우리 _name 아이가 잘 할 수 있는 퀘스트는 어떤 퀘스트일까요?<br>'
-            + '성공률이 높었던 유형의 퀘스트를 추천드립니다.';
-        quest_rec[fk_kids].type  = quest_type_array[0][0];
-    }
-
-    // make quest_rec data
-    for(var i in quest_data) {
-        if (quest_data[i].type == quest_rec[fk_kids].type && state[quest_data[i].state] == 'finish') {
-            if (quest_data[i].pk_parents_quest)
-                quest_rec[fk_kids].pk_parents_quest = quest_data[i].pk_parents_quest;
-            else if (quest_data[i].fk_std_que)
-                quest_rec[fk_kids].fk_std_que = quest_data[i].fk_std_que;
-            break;
         }
+        else if (quest_finish_percent > 70) {
+            var text = '좋습니다! _name 아이의 퀘스트 성공률은 다소 높은 편입니다.<br>'
+                + '우리 _name에게는 다소 성공률이 낮았던 퀘스트를 다시 도전해 보도록 하면 어떨까요?<br>'
+                + '어떤 임무든 척척 해낼 수 있는 아이가 되도록 도와주세요.';
+
+            quest_type_array.splice(-1, 1);
+            quest_type_array.sort(function (a, b) {
+                return a[1] - b[1]
+            });
+            quest_rec[fk_kids].type = quest_type_array[0][0];
+        }
+        else if (quest_finish_percent > 50) {
+            var text = '무난하군요. _name 아이의 퀘스트 성공률은 평균적입니다.<br>'
+                + '우리 _name 아이가 잘 할 수 있는 퀘스트는 어떤 퀘스트일까요?<br>'
+                + '성공률이 높었던 유형의 퀘스트를 추천드립니다.';
+            quest_rec[fk_kids].type = quest_type_array[0][0];
+        }
+        else {
+            var text = '_name 아이의 퀘스트 성공률이 다소 낮은 편입니다.<br>'
+                + '우리 _name 아이가 잘 할 수 있는 퀘스트는 어떤 퀘스트일까요?<br>'
+                + '성공률이 높었던 유형의 퀘스트를 추천드립니다.';
+            quest_rec[fk_kids].type = quest_type_array[0][0];
+        }
+
+        // make quest_rec data
+        for (var i in quest_data) {
+            if (quest_data[i].type == quest_rec[fk_kids].type && state[quest_data[i].state] == 'finish') {
+                if (quest_data[i].pk_parents_quest)
+                    quest_rec[fk_kids].pk_parents_quest = quest_data[i].pk_parents_quest;
+                else if (quest_data[i].fk_std_que)
+                    quest_rec[fk_kids].fk_std_que = quest_data[i].fk_std_que;
+                break;
+            }
+        }
+        $('#insert_quest_command'+fk_kids).html(text.replace(/_name/g, findChild(fk_kids)));
     }
-    $('#insert_quest_command'+fk_kids).html(text.replace(/_name/g, findChild(fk_kids)));
+    else
+        $('#insert_quest_command'+fk_kids).html();
 
     $('#addQuest' + fk_kids).click(function (e) {
         e.stopPropagation();
