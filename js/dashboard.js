@@ -126,9 +126,10 @@ function goal_drawChart(fk_kids) {
     data.datasets[0].data = dataset_line;
     data.datasets[1].data = dataset_bar;
 
+
     $('#content'+fk_kids).html(goal.content+'<br> ');
     $('#now'+fk_kids).html(dayMoney.toUnit(true)+'<br>('+startDate.yyyymmdd()+' 부터)');
-    $('#goal'+fk_kids).html(goal.goal_cost.toUnit(true)+'<br>('+goalDate.yyyymmdd()+' 까지)');
+    $('#goal'+fk_kids).html('<b style="color:#ff0000">'+goal.goal_cost.toUnit(true)+'</b><br>('+goalDate.yyyymmdd()+' 까지)');
 
     if(chart[fk_kids])
         chart[fk_kids].destroy();
@@ -136,7 +137,26 @@ function goal_drawChart(fk_kids) {
     // Get context with jQuery - using jQuery's .get() method.
     chartctx[fk_kids] = $('#chart'+fk_kids).get(0).getContext("2d");
 
-    chart[fk_kids] = new Chart(chartctx[fk_kids]).LineBar(data, options);
+    if(dataset_bar.length == 0)
+    {
+        chartctx[fk_kids].font='20px Arial';
+        chartctx[fk_kids].textBaseline = 'middle';
+        chartctx[fk_kids].fillText('현재 목표에 대한 저금 내역이 없습니다.',20,200);
+    }
+    else
+        chart[fk_kids] = new Chart(chartctx[fk_kids]).LineBar(data, options);
+
+    //$('#content'+fk_kids).html(goal.content+'<br> ');
+    //$('#now'+fk_kids).html(dayMoney.toUnit(true)+'<br>('+startDate.yyyymmdd()+' 부터)');
+    //$('#goal'+fk_kids).html(goal.goal_cost.toUnit(true)+'<br>('+goalDate.yyyymmdd()+' 까지)');
+    //
+    //if(chart[fk_kids])
+    //    chart[fk_kids].destroy();
+    //
+    //// Get context with jQuery - using jQuery's .get() method.
+    //chartctx[fk_kids] = $('#chart'+fk_kids).get(0).getContext("2d");
+    //
+    //chart[fk_kids] = new Chart(chartctx[fk_kids]).LineBar(data, options);
 }
 
 function fitToContainer(fk_kids) {
