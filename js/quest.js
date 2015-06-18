@@ -429,6 +429,16 @@ function makeTable(fk_kids, tables, quest_data) {
                     "에러"// finish
                 ];
 
+                var state = ["",
+                    "<button>진행중</button>",    // doing
+                    "<button>검사 기다리는중</button>",        // waiting
+                    "<button>다시 진행중</button>",     // retry
+                    "종료",
+                    "에러"// finish
+                ];
+
+                data.fk_std_quedata.fk_std_que
+
                 return state[data];
             }
         }
