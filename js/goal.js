@@ -135,7 +135,14 @@ function goal_drawChart(fk_kids) {
     // Get context with jQuery - using jQuery's .get() method.
     chartctx[fk_kids] = $('#chart'+fk_kids).get(0).getContext("2d");
 
-    chart[fk_kids] = new Chart(chartctx[fk_kids]).LineBar(data, options);
+    if(dataset_bar.length == 0)
+    {
+        chartctx[fk_kids].font='20px Arial';
+        chartctx[fk_kids].textBaseline = 'middle';
+        chartctx[fk_kids].fillText('현재 목표에 대한 저금 내역이 없습니다.',20,200);
+    }
+    else
+        chart[fk_kids] = new Chart(chartctx[fk_kids]).LineBar(data, options);
 }
 
 function fitToContainer(fk_kids) {
@@ -238,15 +245,15 @@ function makeTable(fk_kids, table)
 {
     var columds = [
         {"title" : "목표 내용"},
-        {"title" : "시작일",
+        {"title" : "시작 시간",
             "render": function (data, type, row) {
                 var token = {};
                 token.value = data.split("T");
                 token.time = token.value[1].split(":");
                 token.time = token.time[0] + '시 ' + token.time[1] + '분';
 
-                return token.value[0];
-                //return token.value[0] + ' ' + token.time;
+                //return token.value[0];
+                return token.value[0] + '<br>' + token.time;
             }
         },
         {"title" : "종료일\n(자정 기준)",

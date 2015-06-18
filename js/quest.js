@@ -254,7 +254,7 @@ function calculateQuest(fk_kids, quest_data, html) {
         quest_class_center = "text-center";
     }
 
-    $('#insertQuest').prepend(html
+    $('#insert_section').append(html
         .replace(/_percent/g, quest_finish_percent)
         .replace(/_fk_kids/g, fk_kids)
         .replace(/_name/g, findChild(fk_kids))
@@ -437,17 +437,18 @@ function makeTable(fk_kids, tables, quest_data) {
                     "에러"// finish
                 ];
 
-                var state = ["",
-                    "<button>진행중</button>",    // doing
-                    "<button>검사 기다리는중</button>",        // waiting
-                    "<button>다시 진행중</button>",     // retry
+                var state_std = ["",
+                    "진행중",    // doing
+                    "검사 기다리는중",        // waiting
+                    "다시 진행중",     // retry
                     "종료",
                     "에러"// finish
                 ];
 
-                data.fk_std_quedata.fk_std_que
-
-                return state[data];
+                if(row[0] == 0)
+                    return state_std[data];
+                else
+                    return state[data];
             }
         }
     ];
