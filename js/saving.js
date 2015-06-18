@@ -141,14 +141,41 @@ function day_drawChart() {
         dayLabels = new Array();
 
         dayMoney = 0;
-        for(var index_date in saving)
+
+        var sort_saving = [];
+        $.each(saving, function(key,value){
+            sort_saving.push( { key: key } );
+        });
+        sort_saving.sort(function(a,b){
+            var temp_a = a.key.split('-');
+            temp_a = temp_a[0] + temp_a[1] + temp_a[2];
+            temp_a = parseInt(temp_a);
+            var temp_b = b.key.split('-');
+            temp_b = temp_b[0] + temp_b[1] + temp_b[2];
+            temp_b = parseInt(temp_b);
+            return temp_a - temp_b;
+        });
+
+        for(var for_index in sort_saving)
         {
-            for(var index in saving[index_date][fk_kids])
-                dayMoney += saving[index_date][fk_kids][index].now_cost;
+            var key = sort_saving[for_index].key;
+
+            for(var index in saving[key][fk_kids])
+                dayMoney += saving[key][fk_kids][index].now_cost;
             dayDataset.push(dayMoney);
 
-            dayLabels.push(index_date);
+            dayLabels.push(key);
         }
+
+        // 정렬 되지 않는 json들
+        //for(var index_date in saving)
+        //{
+        //    for(var index in saving[index_date][fk_kids])
+        //        dayMoney += saving[index_date][fk_kids][index].now_cost;
+        //    dayDataset.push(dayMoney);
+        //
+        //    dayLabels.push(index_date);
+        //}
 
         dayData.labels = dayLabels;
         dayData.datasets[dayData.datasets.length] = JSON.parse(JSON.stringify(dayData.datasets[0]));

@@ -4,7 +4,7 @@
 
 var tables;
 var std_quests;
-var state = ['', 'doing', 'waiting', 'retry', 'finish'];
+var state = ['', 'doing', 'waiting', 'retry', 'finish', 'delete'];
 
 var quest_selected;
 var pk_quest;
@@ -212,13 +212,13 @@ function calculateQuest(fk_kids, quest_data, html) {
         if (!quest_type)
             quest_type = "etc";
 
-        quest_finish += (state[quest_data[index_data].state] == "finish");
+        quest_finish += (state[quest_data[index_data].state] == "finish") || (state[quest_data[index_data].state] == "delete");
         if (!quest_type_json[quest_type]) {
             quest_type_json[quest_type] = {};
             quest_type_json[quest_type].count = 0;
             quest_type_json[quest_type].finish = 0;
         }
-        quest_type_json[quest_type].finish += (state[quest_data[index_data].state] == "finish");
+        quest_type_json[quest_type].finish += (state[quest_data[index_data].state] == "finish") || (state[quest_data[index_data].state] == "delete");
         quest_type_json[quest_type].count++;
     }
 
@@ -321,11 +321,11 @@ function calculateQuest(fk_kids, quest_data, html) {
 
         // make quest_rec data
         for (var i in quest_data) {
-            if (quest_data[i].type == quest_rec[fk_kids].type && state[quest_data[i].state] == 'finish') {
+            if (quest_data[i].type == quest_rec[fk_kids].type && (state[quest_data[i].state] == 'finish' || state[quest_data[i].state] == 'delete')) {
                 if (quest_data[i].pk_parents_quest)
                     quest_rec[fk_kids].pk_parents_quest = quest_data[i].pk_parents_quest;
-                else if (quest_data[i].fk_std_que)
-                    quest_rec[fk_kids].fk_std_que = quest_data[i].fk_std_que;
+                else if (quest_data[i].pk_quest)
+                    quest_rec[fk_kids].pk_quest = quest_data[i].pk_quest;
                 break;
             }
         }
@@ -342,7 +342,7 @@ function calculateQuest(fk_kids, quest_data, html) {
         {
 
             // set dataset of input tag as quest_rec
-            if(quest_data[i].type == quest_rec[fk_kids].type && state[quest_data[i].state] == 'finish')
+            if(quest_data[i].type == quest_rec[fk_kids].type && (state[quest_data[i].state] == 'finish' || state[quest_data[i].state] == 'delete'))
             {
                 //if(quest_data[i].pk_parents_quest)
                 //    quest_rec[fk_kids].pk_parents_quest = quest_data[i].pk_parents_quest;
@@ -367,7 +367,7 @@ function calculateQuest(fk_kids, quest_data, html) {
 function makeTable(fk_kids, tables, quest_data) {
     var columds = [
         {
-            "classNae": "pk",
+            "classNae": "pk_parents_quest",
             "searchable": false,
             "visible": false
         },
@@ -392,6 +392,8 @@ function makeTable(fk_kids, tables, quest_data) {
                 }
 
                 if(quest_rec[fk_kids].pk_parents_quest == row[0])
+                    data = data + ' <span class="badge">추천</span>';
+                else if(quest_rec[fk_kids].pk_quest == row[6])
                     data = data + ' <span class="badge">추천</span>';
 
                 return data;
@@ -433,16 +435,16 @@ function makeTable(fk_kids, tables, quest_data) {
                     "<button>진행중</button>",    // doing
                     "<button>검사 기다리는중</button>",        // waiting
                     "<button>다시 진행중</button>",     // retry
-                    "종료",
-                    "에러"// finish
+                    "종료", // finish
+                    "종료" // finish
                 ];
 
                 var state_std = ["",
                     "진행중",    // doing
                     "검사 기다리는중",        // waiting
                     "다시 진행중",     // retry
-                    "종료",
-                    "에러"// finish
+                    "종료", // finish
+                    "종료"// delete
                 ];
 
                 if(row[0] == 0)
@@ -450,6 +452,11 @@ function makeTable(fk_kids, tables, quest_data) {
                 else
                     return state[data];
             }
+        },
+        {
+            "classNae": "pk_quest",
+            "searchable": false,
+            "visible": false
         }
     ];
 
@@ -488,6 +495,7 @@ function makeTable(fk_kids, tables, quest_data) {
             });
         },
 
+        order: [[1, 'desc'],[3, 'asc'], [5, 'asc']],
         paging: false,
         "data": [],
         "columns": columds,
@@ -510,6 +518,8 @@ function makeTable(fk_kids, tables, quest_data) {
             // error avoid
             //data.startTime = (new Date()).toString();
         }
+        else
+            data.pk_quest = 0;
 
         var rowdata = [];
 
@@ -519,6 +529,7 @@ function makeTable(fk_kids, tables, quest_data) {
         rowdata.push(data.startTime);
         rowdata.push(data.point);
         rowdata.push(data.state);
+        rowdata.push(data.pk_quest);
 
         tables[fk_kids].row.add(rowdata);
     }
