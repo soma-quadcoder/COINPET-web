@@ -126,11 +126,23 @@ a.kidsimgc{
     background-size: cover;
 }
 
+.kidsimg {
+    margin-right: 20px;
+}
+
+.kids_detail {
+    margin-bottom: 40px;
+}
+
+#quizPercent p{
+    margin: 0 auto;
+}
+
 .kids_detail div {
     /*text-align: -webkit-center;*/
     position: relative;
     display: table;
-    margin: 0 auto;
+    margin-bottom: 5px;
 }
 
 .kids_detail div div {

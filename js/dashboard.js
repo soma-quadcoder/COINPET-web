@@ -561,15 +561,56 @@ function calculateWeek(fk_kids, html){
                 money = parseInt(money / savingCount);
             $('#insertWeek').prepend(html
                 .replace('_name', findChild(fk_kids))
-                .replace('_fk_kids', fk_kids)
+                .replace(/_fk_kids/g, fk_kids)
                 .replace('_money', money.toUnit())
                 .replace('_count', savingCount)
                 .replace('_stateClass', 'success')
                 .replace('_state', '아주 좋음'));
+
+            // 퀴즈 데이터 요청
+            prependQuiz(fk_kids, html);
+
         },
         error: function () {
             alert('자녀의 저금 정보를 받아오는데 실패하였습니다.');
         }
     });
+}
+
+function prependQuiz(fk_kids, html) {
+
+    $.ajax({
+        type: 'GET',
+        url: domain + /*api*/'/quiz/' + fk_kids,
+        headers : {"Authorization": jwt},
+        success: function (result) {
+            var i = result.length;
+            var count = result.length;
+            var successCount = 0;
+
+            while (i) {
+                i--;
+                if(result[i].state === 'success') {
+                    successCount ++;
+                }
+            }
+
+            console.log('count', count);
+            if(count > 0) {
+                $('#quizPercent'+fk_kids).html(
+                    '<p>이번주 자녀는 퀴즈 <b>' + count + '개</b> 를 풀어봤으며, ' +
+                    '정답률은 <b>' + Math.round(successCount / count * 10000) / 100 + '%</b> 입니다.</p>');
+            } else {
+                $('#quizPercent'+fk_kids).html(
+                    '<p>이번주 자녀는 퀴즈 <b>0개</b> 를 풀어봤습니다. ' +
+                    '퀴즈 참여를 지도해주세요.</p>');
+            }
+
+        },
+        error: function () {
+            alert('자녀의 퀴즈 정답률을 받아오는데 실패하였습니다.');
+        }
+    });
+
 }
 
