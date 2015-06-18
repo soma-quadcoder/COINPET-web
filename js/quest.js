@@ -484,9 +484,9 @@ function makeTable(fk_kids, tables, quest_data) {
         {
             // data is system quest
             data.pk_parents_quest = 0;
-            data.point = std_quests[data.pk_quest].point;
-            data.type = std_quests[data.pk_quest].type;
-            data.content = std_quests[data.pk_quest].content;
+            data.point = std_quests[data.fk_std_que].point;
+            data.type = std_quests[data.fk_std_que].type;
+            data.content = std_quests[data.fk_std_que].content;
 
             // error avoid
             //data.startTime = (new Date()).toString();
